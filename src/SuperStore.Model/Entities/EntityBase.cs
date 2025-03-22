@@ -1,5 +1,5 @@
 ﻿namespace SuperStore.Model.Entities;
-public abstract class Entity
+public abstract class EntityBase
 {
     public int Id { get; protected set; }
     public bool IsDeleted { get; protected set; }
@@ -8,7 +8,7 @@ public abstract class Entity
 
     public override bool Equals(object obj)
     {
-        if (obj == null || obj is not Entity entityToCompare)
+        if (obj == null || obj is not EntityBase entityToCompare)
             return false;
 
         if (ReferenceEquals(this, entityToCompare)) 
