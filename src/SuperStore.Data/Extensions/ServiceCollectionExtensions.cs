@@ -9,7 +9,7 @@ using SuperStore.Data.Repositories;
 namespace SuperStore.Data.Extensions;
 internal static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddDataServices(
+    public static IServiceCollection AddData(
         this IServiceCollection services, IConfiguration configuration, EnvironmentOptions environment)
     {
         services.AddDbContext<SuperStoreDbContext>(options =>

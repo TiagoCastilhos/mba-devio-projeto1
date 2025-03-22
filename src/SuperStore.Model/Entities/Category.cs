@@ -9,4 +9,17 @@ public class Category : EntityBase
     public Seller CreatedBy { get; protected set; }
 
     public int CreatedById { get; protected set; }
+
+    protected Category() { }
+
+    public Category(string name, Seller createdBy)
+    {
+        Name = name;
+        CreatedBy = createdBy;
+    }
+
+    public void ChangeName(string name)
+    {
+        Name = name;
+    }
 }
