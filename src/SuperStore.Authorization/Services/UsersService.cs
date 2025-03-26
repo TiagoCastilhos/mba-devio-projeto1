@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SuperStore.Authorization.Abstractions.Services;
 using SuperStore.Authorization.InputModels;
-using SupperStore.Application.Abstractions.Services;
-using SupperStore.Application.InputModels;
+using SuperStore.Application.Abstractions.Services;
+using SuperStore.Application.InputModels;
 
 namespace SuperStore.Authorization.Services;
 internal sealed class UsersService : IUsersService

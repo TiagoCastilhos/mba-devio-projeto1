@@ -1,10 +1,10 @@
 ﻿using SuperStore.Data.Abstractions.Repositories;
 using SuperStore.Model.Entities;
-using SupperStore.Application.Abstractions.Services;
-using SupperStore.Application.InputModels;
-using SupperStore.Application.OutputModels;
+using SuperStore.Application.Abstractions.Services;
+using SuperStore.Application.InputModels;
+using SuperStore.Application.OutputModels;
 
-namespace SupperStore.Application.Services;
+namespace SuperStore.Application.Services;
 
 internal sealed class CategoriesService : ICategoriesService
 {

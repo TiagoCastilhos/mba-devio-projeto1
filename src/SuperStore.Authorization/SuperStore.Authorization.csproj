@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SuperStore.Data\SuperStore.Data.csproj" />
-    <ProjectReference Include="..\SupperStore.Application\SupperStore.Application.csproj" />
+    <ProjectReference Include="..\SuperStore.Application\SuperStore.Application.csproj" />
   </ItemGroup>
 
 </Project>

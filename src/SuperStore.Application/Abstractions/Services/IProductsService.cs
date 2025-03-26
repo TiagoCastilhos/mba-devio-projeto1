@@ -1,7 +1,7 @@
-﻿using SupperStore.Application.InputModels;
-using SupperStore.Application.OutputModels;
+﻿using SuperStore.Application.InputModels;
+using SuperStore.Application.OutputModels;
 
-namespace SupperStore.Application.Abstractions.Services;
+namespace SuperStore.Application.Abstractions.Services;
 public interface IProductsService
 {
     Task<IReadOnlyCollection<ProductOutputModel>> GetAsync(CancellationToken cancellationToken);

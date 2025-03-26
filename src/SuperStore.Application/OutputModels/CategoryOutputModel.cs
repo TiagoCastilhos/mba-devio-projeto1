@@ -1,6 +1,6 @@
 ﻿using SuperStore.Model.Entities;
 
-namespace SupperStore.Application.OutputModels;
+namespace SuperStore.Application.OutputModels;
 public sealed class CategoryOutputModel(Category category)
 {
     public int Id { get; } = category.Id;

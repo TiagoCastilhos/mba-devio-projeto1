@@ -1,8 +1,8 @@
-﻿using SupperStore.Application.Abstractions.Services;
-using SupperStore.Application.Services;
+﻿using SuperStore.Application.Abstractions.Services;
+using SuperStore.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SupperStore.Application.Extensions;
+namespace SuperStore.Application.Extensions;
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)

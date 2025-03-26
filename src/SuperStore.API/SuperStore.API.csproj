@@ -10,4 +10,10 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.14" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SuperStore.Authorization\SuperStore.Authorization.csproj" />
+    <ProjectReference Include="..\SuperStore.Data\SuperStore.Data.csproj" />
+    <ProjectReference Include="..\SuperStore.Application\SuperStore.Application.csproj" />
+  </ItemGroup>
+
 </Project>

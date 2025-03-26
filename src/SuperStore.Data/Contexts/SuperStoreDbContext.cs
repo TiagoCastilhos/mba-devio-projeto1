@@ -10,6 +10,12 @@ internal sealed class SuperStoreDbContext : DbContext, ISuperStoreDbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<Seller> Sellers { get; set; }
 
+    public SuperStoreDbContext(DbContextOptions options) 
+        : base(options)
+    {
+        
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

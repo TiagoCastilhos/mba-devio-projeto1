@@ -1,11 +1,9 @@
-﻿using SuperStore.CrossCutting.Enums;
-
-namespace SuperStore.CrossCutting.Options;
+﻿namespace SuperStore.CrossCutting.Options;
 
 public sealed class EnvironmentOptions
 {
-    public EnvironmentType EnvironmentType { get; init; }
+    public required string EnvironmentName { get; init; }
 
     public bool IsDevelopment()
-        => EnvironmentType == EnvironmentType.Development;
+        => EnvironmentName == "Development";
 }

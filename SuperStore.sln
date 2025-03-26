@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{D7ABFAF3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperStore.CrossCutting", "src\SuperStore.CrossCutting\SuperStore.CrossCutting.csproj", "{6D17C321-0476-452B-9D13-8AE256691A9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupperStore.Application", "src\SupperStore.Application\SupperStore.Application.csproj", "{0EE6FF52-8D39-430D-A6EB-A4DF12FB9857}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperStore.Application", "src\SuperStore.Application\SuperStore.Application.csproj", "{0EE6FF52-8D39-430D-A6EB-A4DF12FB9857}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

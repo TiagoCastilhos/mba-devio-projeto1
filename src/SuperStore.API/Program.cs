@@ -1,41 +1,76 @@
-var builder = WebApplication.CreateBuilder(args);
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using SuperStore.Application.Extensions;
+using SuperStore.Authorization.Extensions;
+using SuperStore.CrossCutting.Options;
+using SuperStore.Data.Extensions;
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+namespace SuperStore.API;
+public class Program
 {
-    app.MapOpenApi();
-}
+    public static async Task Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-app.UseHttpsRedirection();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+        //builder.Services.AddAuthentication(opt =>
+        //{
+        //    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        //    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+        //}).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+        //    options =>
+        //    {
+        //        options.MetadataAddress = builder.Configuration.GetValue<string>("AuthenticationMetadataAddress");
 
-app.Run();
+        //        options.TokenValidationParameters = new TokenValidationParameters
+        //        {
+        //            ValidateAudience = false,
+        //            ClockSkew = TimeSpan.Zero,
+        //            ValidIssuers = builder.Configuration.GetValue<string>("AuthenticationValidIssuers")!.Split(';')
+        //        };
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        //        options.AddIntegrationTestsTokenSupport(options.TokenValidationParameters, builder.Configuration);
+        //    });
+
+        builder.Services.AddEndpointsApiExplorer();
+
+        var environmentOptions = new EnvironmentOptions()
+        {
+            EnvironmentName = builder.Environment.EnvironmentName
+        };
+
+        builder.Services.AddData(builder.Configuration, environmentOptions);
+        builder.Services.AddApplication();
+        builder.Services.AddApplicationAuthorization();
+
+        var app = builder.Build();
+
+        app.UseRouting();
+
+        app.UseAuthentication();
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        await ProvideInfrastructureAsync(environmentOptions, builder.Services);
+
+        await app.RunAsync();
+    }
+
+    private static async Task ProvideInfrastructureAsync(EnvironmentOptions environmentOptions, IServiceCollection services)
+    {
+        if (!environmentOptions.IsDevelopment())
+            return;
+
+        await services.CreateDatabaseIfNotExistsAsync();
+    }
 }
