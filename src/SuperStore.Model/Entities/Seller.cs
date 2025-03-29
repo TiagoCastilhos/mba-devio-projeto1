@@ -13,6 +13,9 @@ public class Seller : EntityBase
 
     public Seller(string name, string userId)
     {
+        AssertionConcern.AssertArgumentNotNullOrEmpty(name, nameof(name));
+        AssertionConcern.AssertArgumentNotNullOrEmpty(userId, nameof(userId));
+
         Name = name;
         UserId = userId;
     }

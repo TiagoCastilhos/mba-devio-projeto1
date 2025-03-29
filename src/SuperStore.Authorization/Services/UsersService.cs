@@ -3,6 +3,8 @@ using SuperStore.Authorization.Abstractions.Services;
 using SuperStore.Authorization.InputModels;
 using SuperStore.Application.Abstractions.Services;
 using SuperStore.Application.InputModels;
+using SuperStore.Authorization.Exceptions;
+using SuperStore.Authorization.OutputModels;
 
 namespace SuperStore.Authorization.Services;
 internal sealed class UsersService : IUsersService
@@ -16,7 +18,7 @@ internal sealed class UsersService : IUsersService
         _sellersService = sellersService;
     }
 
-    public async Task CreateUserAsync(CreateUserInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<UserOutputModel> CreateAsync(CreateUserInputModel inputModel, CancellationToken cancellationToken)
     {
         var user = new IdentityUser
         {
@@ -27,12 +29,12 @@ internal sealed class UsersService : IUsersService
         var result = await _userManager.CreateAsync(user, inputModel.Password);
 
         if (!result.Succeeded)
-        {
-            //throw exception
-        }
+            throw new UserCreationException(result.Errors);
 
-        var createdUser = await _userManager.FindByEmailAsync(inputModel.Name);
-        
-        var seller = await _sellersService.CreateAsync(new CreateSellerInputModel(inputModel.Name, createdUser!.Id), cancellationToken);
+        var createdUser = await _userManager.FindByEmailAsync(inputModel.Email);
+
+        await _sellersService.CreateAsync(new CreateSellerInputModel(inputModel.Name, createdUser!.Id), cancellationToken);
+
+        return new UserOutputModel(createdUser!);
     }
 }

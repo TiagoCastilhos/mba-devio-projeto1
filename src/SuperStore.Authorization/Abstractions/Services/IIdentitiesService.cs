@@ -2,8 +2,7 @@
 using SuperStore.Authorization.OutputModels;
 
 namespace SuperStore.Authorization.Abstractions.Services;
-
-public interface IUsersService
+public interface IIdentitiesService
 {
-    Task<UserOutputModel> CreateAsync(CreateUserInputModel inputModel, CancellationToken cancellationToken);
+    Task<LoginOutputModel> LoginAsync(LoginUserInputModel inputModel, CancellationToken cancellationToken);
 }

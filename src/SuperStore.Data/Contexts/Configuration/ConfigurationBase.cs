@@ -20,11 +20,11 @@ internal abstract class ConfigurationBase<TEntity> : IEntityTypeConfiguration<TE
         ConfigureEntity(builder);
 
         builder.Property(e => e.CreatedOn)
-            .HasDefaultValueSql("GETDATE()")
+            .HasDefaultValue(DateTimeOffset.UtcNow)
             .ValueGeneratedOnAdd();
 
         builder.Property(e => e.UpdatedOn)
-            .HasDefaultValueSql("GETDATE()")
+            .HasDefaultValue(DateTimeOffset.UtcNow)
             .ValueGeneratedOnAddOrUpdate();
 
         builder.Property(e => e.IsDeleted)
