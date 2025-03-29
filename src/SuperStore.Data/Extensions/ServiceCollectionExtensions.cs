@@ -24,7 +24,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICategoriesRepository, CategoriesRepository>();
         services.AddScoped<IProductsRepository, ProductsRepository>();
         services.AddScoped<ISellersRepository, SellersRepository>();
-
+        
         return services;
     }
 

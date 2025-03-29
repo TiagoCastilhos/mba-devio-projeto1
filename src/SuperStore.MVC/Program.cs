@@ -1,29 +1,54 @@
-var builder = WebApplication.CreateBuilder(args);
+using SuperStore.Application.Extensions;
+using SuperStore.Authorization.Extensions;
+using SuperStore.CrossCutting.Options;
+using SuperStore.Data.Extensions;
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+namespace SuperStore.MVC;
+public class Program
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    public static async Task Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddControllersWithViews();
+
+        var environmentOptions = new EnvironmentOptions()
+        {
+            EnvironmentName = builder.Environment.EnvironmentName
+        };
+
+        builder.Services.AddRazorPages();
+
+        builder.Services.AddData(builder.Configuration, environmentOptions);
+        builder.Services.AddApplication();
+        builder.Services.AddAppAuthorization();
+
+        var app = builder.Build();
+
+        if (!environmentOptions.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseRouting();
+
+        app.UseAuthorization();
+        app.UseStaticFiles();
+
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        await ProvideInfrastructureAsync(environmentOptions, builder.Services);
+        await app.RunAsync();
+    }
+
+    private static async Task ProvideInfrastructureAsync(EnvironmentOptions environmentOptions, IServiceCollection services)
+    {
+        if (!environmentOptions.IsDevelopment())
+            return;
+
+        await services.CreateDatabaseIfNotExistsAsync();
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapStaticAssets();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
-
-app.Run();

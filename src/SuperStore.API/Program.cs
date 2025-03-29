@@ -79,7 +79,6 @@ public class Program
         app.MapControllers();
 
         await ProvideInfrastructureAsync(environmentOptions, builder.Services);
-
         await app.RunAsync();
     }
 
