@@ -1,14 +1,10 @@
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SuperStore.Application.Extensions;
 using SuperStore.Authorization.Extensions;
 using SuperStore.CrossCutting.Options;
 using SuperStore.Data.Extensions;
-using IdentityOptions = SuperStore.Authorization.Options.IdentityOptions;
 
 namespace SuperStore.API;
 public class Program
@@ -23,30 +19,6 @@ public class Program
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });
-
-        var identityOptions = new IdentityOptions();
-        builder.Configuration.GetSection(IdentityOptions.SectionName).Bind(identityOptions);
-
-        builder.Services
-            .AddAuthentication(opt =>
-            {
-                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(identityOptions.SigningKey)),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = identityOptions.Audience,
-                    ValidIssuer = identityOptions.Issuer
-                };
             });
 
         builder.Services.AddEndpointsApiExplorer();
@@ -87,7 +59,7 @@ public class Program
 
         builder.Services.AddData(builder.Configuration, environmentOptions);
         builder.Services.AddApplication();
-        builder.Services.AddApiAuthorization(identityOptions);
+        builder.Services.AddApiAuthorization(builder.Configuration);
 
         var app = builder.Build();
 

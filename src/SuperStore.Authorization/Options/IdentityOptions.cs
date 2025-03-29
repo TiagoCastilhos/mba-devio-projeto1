@@ -1,5 +1,5 @@
 ﻿namespace SuperStore.Authorization.Options;
-public sealed class IdentityOptions
+internal sealed class IdentityOptions
 {
     public const string SectionName = "Identity";
     public string SigningKey { get; set; } = string.Empty;

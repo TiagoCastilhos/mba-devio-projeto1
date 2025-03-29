@@ -28,7 +28,7 @@ internal sealed class IdentitiesService : IIdentitiesService
         var user = await _userManager.FindByEmailAsync(inputModel.Email)
             ?? throw new UserLoginException("Could not authenticate user. Verify the provided credentials and try again");
 
-        var result = await _signInManager.PasswordSignInAsync(user, inputModel.Password, true, false);
+        var result = await _signInManager.CheckPasswordSignInAsync(user, inputModel.Password, false);
 
         if (!result.Succeeded)
         {
@@ -40,7 +40,7 @@ internal sealed class IdentitiesService : IIdentitiesService
 
         return new LoginOutputModel
         {
-            AccessToken = GenerateJwtToken(user)
+            AccessToken = GenerateJwtToken(user) 
         };
     }
 

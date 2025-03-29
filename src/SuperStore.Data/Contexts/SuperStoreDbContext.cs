@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SuperStore.Data.Abstractions.Contexts;
 using SuperStore.Model.Entities;
-using System.Reflection;
 
 namespace SuperStore.Data.Contexts;
-internal sealed class SuperStoreDbContext : DbContext, ISuperStoreDbContext
+internal sealed class SuperStoreDbContext : IdentityDbContext, ISuperStoreDbContext
 {
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Seller> Sellers { get; set; }
-    public DbSet<IdentityUser> Users { get; set; }
 
     public SuperStoreDbContext(DbContextOptions options) 
         : base(options)
