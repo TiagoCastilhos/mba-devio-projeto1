@@ -27,12 +27,13 @@ public static class ServiceCollectionExtensions
             options.Cookie.HttpOnly = true;
             options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-            options.LoginPath = "/Identities/Login";
+            options.LoginPath = "/Identities/SignIn";
             options.AccessDeniedPath = "/Identities/AccessDenied";
             options.SlidingExpiration = true;
         });
 
         services.AddScoped<IUsersService, UsersService>();
+        services.AddScoped<ISignInService, SignInService>();
 
         return services;
     }

@@ -23,24 +23,24 @@ internal sealed class IdentitiesService : IIdentitiesService
         _identityOptions = identityOptions;
     }
 
-    public async Task<LoginOutputModel> LoginAsync(LoginUserInputModel inputModel, CancellationToken cancellationToken)
+    public async Task<AuthTokenOutputModel> GenerateTokenAsync(UserSignInInputModel inputModel)
     {
         var user = await _userManager.FindByEmailAsync(inputModel.Email)
-            ?? throw new UserLoginException("Não foi possível autenticar o usuário. Verifique as credenciais e tente novamente");
+            ?? throw new UserSignInException("Não foi possível autenticar o usuário. Verifique as credenciais e tente novamente");
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, inputModel.Password, false);
 
         if (!result.Succeeded)
         {
             if (result.IsLockedOut)
-                throw new UserLoginException("Usuário está bloqueado devido ao excesso de tentativas");
+                throw new UserSignInException("Usuário está bloqueado devido ao excesso de tentativas");
 
-            throw new UserLoginException("Não foi possível autenticar o usuário. Verifique as credenciais e tente novamente");
+            throw new UserSignInException("Não foi possível autenticar o usuário. Verifique as credenciais e tente novamente");
         }
 
-        return new LoginOutputModel
+        return new AuthTokenOutputModel
         {
-            AccessToken = GenerateJwtToken(user) 
+            AccessToken = GenerateJwtToken(user)
         };
     }
 

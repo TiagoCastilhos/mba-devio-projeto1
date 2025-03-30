@@ -2,7 +2,8 @@
 using SuperStore.Authorization.OutputModels;
 
 namespace SuperStore.Authorization.Abstractions.Services;
-public interface IIdentitiesService
+
+public interface ISignInService
 {
-    Task<AuthTokenOutputModel> GenerateTokenAsync(UserSignInInputModel inputModel);
+    Task<SignInOutputModel> SignInAsync(UserSignInInputModel inputModel);
 }

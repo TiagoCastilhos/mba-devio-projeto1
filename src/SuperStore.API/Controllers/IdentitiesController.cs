@@ -29,23 +29,23 @@ public class IdentitiesController : ControllerBase
             var userOutputModel = await _usersService.CreateAsync(inputModel, Request.HttpContext.RequestAborted);
             return Ok(userOutputModel);
         }
-        catch (UserLoginException ex)
+        catch (UserSignInException ex)
         {
             return BadRequest(ex.Message);
         }
     }
 
-    [HttpPost("login")]
-    [ProducesResponseType(typeof(LoginOutputModel), StatusCodes.Status200OK)]
+    [HttpPost("signin")]
+    [ProducesResponseType(typeof(AuthTokenOutputModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> LoginAsync([FromBody] LoginUserInputModel inputModel)
+    public async Task<IActionResult> SignInAsync([FromBody] UserSignInInputModel inputModel)
     {
         try
         {
-            var loginOutputModel = await _identitiesService.LoginAsync(inputModel, Request.HttpContext.RequestAborted);
-            return Ok(loginOutputModel);
+            var authTokenOutputModel = await _identitiesService.GenerateTokenAsync(inputModel);
+            return Ok(authTokenOutputModel);
         }
-        catch (UserLoginException ex)
+        catch (UserSignInException ex)
         {
             return BadRequest(ex.Message);
         }
