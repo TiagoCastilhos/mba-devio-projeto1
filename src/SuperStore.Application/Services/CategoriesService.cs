@@ -1,8 +1,9 @@
-﻿using SuperStore.Data.Abstractions.Repositories;
-using SuperStore.Model.Entities;
-using SuperStore.Application.Abstractions.Services;
+﻿using SuperStore.Application.Abstractions.Services;
+using SuperStore.Application.Exceptions;
 using SuperStore.Application.InputModels;
 using SuperStore.Application.OutputModels;
+using SuperStore.Data.Abstractions.Repositories;
+using SuperStore.Model.Entities;
 
 namespace SuperStore.Application.Services;
 
@@ -36,12 +37,8 @@ internal sealed class CategoriesService : ICategoriesService
 
     public async Task<CategoryOutputModel> UpdateAsync(UpdateCategoryInputModel inputModel, CancellationToken cancellationToken)
     {
-        var category = await _categoriesRepository.GetAsync(inputModel.Id, cancellationToken);
-
-        if (category == null)
-        {
-            //throw exception
-        }
+        var category = await _categoriesRepository.GetAsync(inputModel.Id, cancellationToken)
+            ?? throw new EntityNotFoundException(nameof(Category), inputModel.Id);
 
         category.ChangeName(inputModel.Name);
 
@@ -52,12 +49,8 @@ internal sealed class CategoriesService : ICategoriesService
 
     public async Task DeleteAsync(int id, CancellationToken cancellationToken)
     {
-        var category = await _categoriesRepository.GetAsync(id, cancellationToken);
-
-        if (category == null)
-        {
-            //throw exception
-        }
+        var category = await _categoriesRepository.GetAsync(id, cancellationToken)
+            ?? throw new EntityNotFoundException(nameof(Category), id);
 
         _categoriesRepository.Delete(category);
         await _categoriesRepository.SaveChangesAsync(cancellationToken);

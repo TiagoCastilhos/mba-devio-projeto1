@@ -1,11 +1,11 @@
-﻿using SuperStore.Data.Abstractions.Repositories;
-using SuperStore.Model.Entities;
-using SuperStore.Application.Abstractions.Services;
+﻿using SuperStore.Application.Abstractions.Services;
+using SuperStore.Application.Exceptions;
 using SuperStore.Application.InputModels;
 using SuperStore.Application.OutputModels;
+using SuperStore.Data.Abstractions.Repositories;
+using SuperStore.Model.Entities;
 
 namespace SuperStore.Application.Services;
-
 internal sealed class ProductsService : IProductsService
 {
     private readonly IProductsRepository _productsRepository;
@@ -43,23 +43,21 @@ internal sealed class ProductsService : IProductsService
 
     public async Task<ProductOutputModel> UpdateAsync(UpdateProductInputModel inputModel, CancellationToken cancellationToken)
     {
-        var product = await _productsRepository.GetAsync(inputModel.Id, cancellationToken);
-        if (product == null)
-        {
-            //throw exception
-        }
+        var product = await _productsRepository.GetAsync(inputModel.Id, cancellationToken)
+            ?? throw new EntityNotFoundException(nameof(Product), inputModel.Id);
 
-        var category = await _categoriesRepository.GetAsync(inputModel.CategoryId, cancellationToken); //not needed if category is not updated
-        if (category == null)
+        if (product.CategoryId != inputModel.CategoryId)
         {
-            //throw exception
+            var category = await _categoriesRepository.GetAsync(inputModel.CategoryId, cancellationToken)
+                ?? throw new EntityNotFoundException(nameof(Category), inputModel.CategoryId);
+
+            product.ChangeCategory(category);
         }
 
         product.ChangeName(inputModel.Name);
         product.ChangeDescription(inputModel.Description);
         product.ChangePrice(inputModel.Price);
         product.ChangeQuantity(inputModel.Quantity);
-        product.ChangeCategory(category);
 
         await _productsRepository.SaveChangesAsync(cancellationToken);
 
@@ -68,12 +66,8 @@ internal sealed class ProductsService : IProductsService
 
     public async Task DeleteAsync(int id, CancellationToken cancellationToken)
     {
-        var product = await _productsRepository.GetAsync(id, cancellationToken);
-
-        if (product == null)
-        {
-            //throw exception
-        }
+        var product = await _productsRepository.GetAsync(id, cancellationToken)
+            ?? throw new EntityNotFoundException(nameof(Product), id);
 
         _productsRepository.Delete(product);
         await _productsRepository.SaveChangesAsync(cancellationToken);

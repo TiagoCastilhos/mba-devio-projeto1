@@ -1,10 +1,12 @@
 ﻿using System.Text;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SuperStore.Authorization.Abstractions.Services;
+using SuperStore.Authorization.InputModels.Validators;
 using SuperStore.Authorization.Services;
 using SuperStore.Data.Contexts;
 using IdentityOptions = SuperStore.Authorization.Options.IdentityOptions;
@@ -49,6 +51,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUsersService, UsersService>();
         services.AddScoped<IIdentitiesService, IdentitiesService>();
+        services.AddValidatorsFromAssemblyContaining<CreateUserInputModelValidator>();
 
         services
             .AddAuthentication(opt =>
