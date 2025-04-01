@@ -1,25 +1,50 @@
 ﻿@{
+
     ViewData["Title"] = "Entrar";
 }
+@model SuperStore.MVC.ViewModels.Identities.SignInViewModel;
 
 <div class="form-signin w-50 m-auto">
-    <form>
+    <form method="post" asp-controller="Identities" asp-action="SignIn">
         <h1 class="h3 mb-3 fw-normal">Entre com suas credenciais:</h1>
 
         <div class="form-floating">
-            <input type="email" class="form-control" id="emailInput" placeholder="nome@exemplo.com">
+            <input asp-for="@Model.Email" class="form-control @(Model?.HasErrors("Email") == true ? "is-invalid" : "")" id="emailInput" placeholder="nome@exemplo.com" required>
             <label for="emailInput">Endereço de e-mail</label>
+            @if (Model?.HasErrors("Email") == true)
+            {
+                <div class="invalid-feedback">
+                    <ul>
+                        @foreach (var error in Model.GetErrors("Email"))
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
         </div>
+        <p></p>
+
         <div class="form-floating">
-            <input type="password" class="form-control" id="passwordInput" placeholder="Senha">
+            <input type="password" asp-for="@Model.Password" class="form-control @(Model?.HasErrors("Password") == true ? "is-invalid" : "")" id="passwordInput" placeholder="Senha" required>
             <label for="passwordInput">Senha</label>
+            @if (Model?.HasErrors("Password") == true)
+            {
+                <div class="invalid-feedback">
+                    <ul>
+                        @foreach (var error in Model.GetErrors("Password"))
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
         </div>
+        <p></p>
 
         <div class="form-check text-start my-3">
-            <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Lembrar de mim
-            </label>
+            <input class="form-check-input" asp-for="@Model.RememberMe" checked="@(Model?.RememberMe == true ? "checked" : "")" type="checkbox" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">Lembrar de mim</label>
         </div>
         <button class="btn btn-primary w-50 py-2" type="submit">Entrar</button>
     </form>

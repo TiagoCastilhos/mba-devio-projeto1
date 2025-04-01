@@ -19,6 +19,8 @@ public static class ServiceCollectionExtensions
         services
             .AddDefaultIdentity<IdentityUser>()
             .AddEntityFrameworkStores<SuperStoreDbContext>();
+        //TODO Localize error messages
+        //https://learn.microsoft.com/en-us/answers/questions/549950/localize-aspnetcore-identity-error-messages
 
         services.Configure<Microsoft.AspNetCore.Identity.IdentityOptions>(ConfigureIdentityOptions);
 
@@ -34,6 +36,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUsersService, UsersService>();
         services.AddScoped<ISignInService, SignInService>();
+        services.AddValidatorsFromAssemblyContaining<CreateUserInputModelValidator>();
 
         return services;
     }

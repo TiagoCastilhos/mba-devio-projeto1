@@ -1,24 +1,62 @@
 ﻿@{
     ViewData["Title"] = "Registrar";
 }
-
+@model SuperStore.MVC.ViewModels.Identities.SignUpViewModel;
 <div class="form-signin w-50 m-auto">
-    <form>
+    <form method="post" asp-controller="Identities" asp-action="SignUp">
         <h1 class="h3 mb-3 fw-normal">Preencha seus dados abaixo:</h1>
 
         <div class="form-floating">
-            <input type="text" class="form-control" id="usernameInput" placeholder="usuário">
-            <label for="usernameInput">Nome de usuário</label>
+            <input asp-for="@Model.Name" class="form-control @(Model?.HasErrors("Name") == true ? "is-invalid" : "")" id="nameInput" placeholder="Nome" required>
+            <label for="nameInput">Nome de usuário</label>
+            @if (Model?.HasErrors("Name") == true)
+            {
+                <div class="invalid-feedback">
+                    <ul>
+                        @foreach (var error in Model.GetErrors("Name"))
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
         </div>
-        <div class="form-floating">
-            <input type="email" class="form-control" id="emailInput" placeholder="nome@exemplo.com">
-            <label for="emailInput">Endereço de e-mail</label>
-        </div>
-        <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Senha">
-            <label for="floatingPassword">Senha</label>
-        </div>
+        <p></p>
 
-        <button class="btn btn-primary w-50 py-2" type="submit">Registrar</button>
+        <div class="form-floating">
+            <input asp-for="@Model.Email" class="form-control @(Model?.HasErrors("Email") == true ? "is-invalid" : "")" id="emailInput" placeholder="nome@exemplo.com" required>
+            <label for="emailInput">Endereço de e-mail</label>
+            @if (Model?.HasErrors("Email") == true)
+            {
+                <div class="invalid-feedback">
+                    <ul>
+                        @foreach (var error in Model.GetErrors("Email"))
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <p></p>
+
+        <div class="form-floating">
+            <input type="password" asp-for="@Model.Password" class="form-control @(Model?.HasErrors("Password") == true ? "is-invalid" : "")" id="passwordInput" placeholder="Senha" required>
+            <label for="passwordInput">Senha</label>
+            @if (Model?.HasErrors("Password") == true)
+            {
+                <div class="invalid-feedback">
+                    <ul>
+                        @foreach (var error in Model.GetErrors("Password"))
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <p></p>
+
+        <button class="btn btn-primary w-50 py-2" type="submit">Entrar</button>
     </form>
 </div>

@@ -28,7 +28,7 @@ internal sealed class SignInService : ISignInService
             };
         }
 
-        var result = await _signInManager.PasswordSignInAsync(user, inputModel.Password, true, false);
+        var result = await _signInManager.PasswordSignInAsync(user, inputModel.Password, inputModel.IsPersistent, false);
 
         return new SignInOutputModel
         {
@@ -37,5 +37,10 @@ internal sealed class SignInService : ISignInService
             Succeeded = result.Succeeded,
             UserExists = true
         };
+    }
+
+    public async Task SignOutAsync()
+    {
+        await _signInManager.SignOutAsync();
     }
 }

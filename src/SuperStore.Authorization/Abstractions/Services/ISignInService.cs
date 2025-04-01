@@ -6,4 +6,5 @@ namespace SuperStore.Authorization.Abstractions.Services;
 public interface ISignInService
 {
     Task<SignInOutputModel> SignInAsync(UserSignInInputModel inputModel);
+    Task SignOutAsync();
 }
