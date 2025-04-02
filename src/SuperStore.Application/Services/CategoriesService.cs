@@ -1,4 +1,5 @@
-﻿using SuperStore.Application.Abstractions.Services;
+﻿using Microsoft.AspNetCore.Identity;
+using SuperStore.Application.Abstractions.Services;
 using SuperStore.Application.Exceptions;
 using SuperStore.Application.InputModels;
 using SuperStore.Application.OutputModels;
@@ -11,11 +12,16 @@ internal sealed class CategoriesService : ICategoriesService
 {
     private readonly ICategoriesRepository _categoriesRepository;
     private readonly ISellersRepository _sellersRepository;
+    private readonly SignInManager<IdentityUser> _signInManager;
 
-    public CategoriesService(ICategoriesRepository categoriesRepository, ISellersRepository sellersRepository)
+    public CategoriesService(
+        ICategoriesRepository categoriesRepository, 
+        ISellersRepository sellersRepository, 
+        SignInManager<IdentityUser> signInManager)
     {
         _categoriesRepository = categoriesRepository;
         _sellersRepository = sellersRepository;
+        _signInManager = signInManager;
     }
 
     public async Task<IReadOnlyCollection<CategoryOutputModel>> GetAsync(CancellationToken cancellationToken)
@@ -26,6 +32,7 @@ internal sealed class CategoriesService : ICategoriesService
 
     public async Task<CategoryOutputModel> CreateAsync(CreateCategoryInputModel inputModel, CancellationToken cancellationToken)
     {
+        var a = _signInManager.Context.User;
         var seller = await _sellersRepository.GetAsync(1, cancellationToken); //Get user id from request
 
         var category = new Category(inputModel.Name, seller);
