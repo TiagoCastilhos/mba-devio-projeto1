@@ -28,7 +28,7 @@ public class CategoriesController : Controller
     [HttpGet("Index")]
     public async Task<IActionResult> IndexAsync()
     {
-        var categories = await _categoriesService.GetAsync(CancellationToken.None);
+        var categories = await _categoriesService.GetAsync(Request.HttpContext.RequestAborted);
 
         return View(categories.Select(c => new CategoryViewModel
         {
@@ -50,7 +50,7 @@ public class CategoriesController : Controller
     {
         var inputModel = new CreateCategoryInputModel(viewModel.Name);
 
-        var validationResult = await _createCategoryValidator.ValidateAsync(inputModel, CancellationToken.None);
+        var validationResult = await _createCategoryValidator.ValidateAsync(inputModel, Request.HttpContext.RequestAborted);
 
         if (!validationResult.IsValid)
         {
@@ -60,14 +60,14 @@ public class CategoriesController : Controller
             return View(viewModel);
         }
 
-        await _categoriesService.CreateAsync(inputModel, CancellationToken.None);
+        await _categoriesService.CreateAsync(inputModel, Request.HttpContext.RequestAborted);
         return RedirectToAction("Index", "Categories");
     }
 
     [HttpGet("Edit")]
     public async Task<IActionResult> Edit(int id)
     {
-        var category = await _categoriesService.GetAsync(id, CancellationToken.None);
+        var category = await _categoriesService.GetAsync(id, Request.HttpContext.RequestAborted);
 
         if (category == null)
             return RedirectToAction("Index", "Categories");
@@ -86,7 +86,7 @@ public class CategoriesController : Controller
     {
         var inputModel = new UpdateCategoryInputModel(viewModel.Id, viewModel.Name);
 
-        var validationResult = await _updateCategoryValidator.ValidateAsync(inputModel, CancellationToken.None);
+        var validationResult = await _updateCategoryValidator.ValidateAsync(inputModel, Request.HttpContext.RequestAborted);
 
         if (!validationResult.IsValid)
         {
@@ -96,14 +96,14 @@ public class CategoriesController : Controller
             return View(viewModel);
         }
 
-        await _categoriesService.UpdateAsync(inputModel, CancellationToken.None);
+        await _categoriesService.UpdateAsync(inputModel, Request.HttpContext.RequestAborted);
         return RedirectToAction("Index", "Categories");
     }
 
     [HttpGet("Delete")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
-        await _categoriesService.DeleteAsync(id, CancellationToken.None);
+        await _categoriesService.DeleteAsync(id, Request.HttpContext.RequestAborted);
         return RedirectToAction("Index", "Categories");
     }
 }

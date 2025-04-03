@@ -15,6 +15,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<ISuperStoreDbContext, SuperStoreDbContext>(options =>
         {
+            options.UseLazyLoadingProxies();
+
             if (environment.IsDevelopment())
                 options.UseSqlite(configuration.GetConnectionString("SuperStoreDb"));
             else
@@ -24,7 +26,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICategoriesRepository, CategoriesRepository>();
         services.AddScoped<IProductsRepository, ProductsRepository>();
         services.AddScoped<ISellersRepository, SellersRepository>();
-        
+
         return services;
     }
 
@@ -33,7 +35,7 @@ public static class ServiceCollectionExtensions
         using var serviceProvider = services.BuildServiceProvider();
 
         var context = serviceProvider.GetRequiredService<ISuperStoreDbContext>();
-        await context.Database.EnsureCreatedAsync();
+
         await context.Database.MigrateAsync();
     }
 }

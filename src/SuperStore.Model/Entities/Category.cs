@@ -6,7 +6,7 @@ public class Category : EntityBase
 
     public string Name { get; protected set; }
     public virtual IReadOnlyCollection<Product> Products => _products;
-    public Seller CreatedBy { get; protected set; }
+    public virtual Seller CreatedBy { get; protected set; }
 
     public int CreatedById { get; protected set; }
 

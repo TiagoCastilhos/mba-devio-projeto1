@@ -20,7 +20,7 @@ public sealed class CreateProductInputModelValidator : AbstractValidator<CreateP
         RuleFor(x => x.Quantity)
             .GreaterThanOrEqualTo(0);
 
-        RuleFor(x => x.CategoryId)
-            .GreaterThanOrEqualTo(1);
+        RuleFor(x => x.Category)
+            .NotEmpty();
     }
 }

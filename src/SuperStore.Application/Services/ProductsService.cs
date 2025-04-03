@@ -1,4 +1,5 @@
-﻿using SuperStore.Application.Abstractions.Services;
+﻿using Microsoft.AspNetCore.Http;
+using SuperStore.Application.Abstractions.Services;
 using SuperStore.Application.Exceptions;
 using SuperStore.Application.InputModels;
 using SuperStore.Application.OutputModels;
@@ -6,7 +7,7 @@ using SuperStore.Data.Abstractions.Repositories;
 using SuperStore.Model.Entities;
 
 namespace SuperStore.Application.Services;
-internal sealed class ProductsService : IProductsService
+internal sealed class ProductsService : ServiceBase, IProductsService
 {
     private readonly IProductsRepository _productsRepository;
     private readonly ISellersRepository _sellersRepository;
@@ -15,31 +16,38 @@ internal sealed class ProductsService : IProductsService
     public ProductsService(
         IProductsRepository productsRepository,
         ISellersRepository sellersRepository,
-        ICategoriesRepository categoriesRepository)
+        ICategoriesRepository categoriesRepository,
+        IHttpContextAccessor httpContextAccessor)
+        : base(httpContextAccessor)
     {
         _productsRepository = productsRepository;
         _sellersRepository = sellersRepository;
         _categoriesRepository = categoriesRepository;
     }
 
-    public async Task<IReadOnlyCollection<ProductOutputModel>> GetAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ProductOutputModel>> ShowcaseAsync(CancellationToken cancellationToken)
     {
         var products = await _productsRepository.GetAsync(cancellationToken);
         return [.. products.Select(product => new ProductOutputModel(product))];
     }
 
-    public async Task<IReadOnlyCollection<ProductOutputModel>> GetAsync(string userId, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ProductOutputModel>> GetAsync(CancellationToken cancellationToken)
     {
+        var userId = GetUserId()!;
         var products = await _productsRepository.GetAsync(userId, cancellationToken);
         return [.. products.Select(product => new ProductOutputModel(product))];
     }
 
     public async Task<ProductOutputModel> CreateAsync(CreateProductInputModel inputModel, CancellationToken cancellationToken)
     {
-        var seller = await _sellersRepository.GetAsync(1, cancellationToken); //Get user id from request
-        var category = await _categoriesRepository.GetAsync(inputModel.CategoryId, cancellationToken);
+        var userId = GetUserId()!;
 
-        var product = new Product(inputModel.Name, inputModel.Description, inputModel.Price, 
+        var seller = await _sellersRepository.GetAsync(userId, cancellationToken);
+
+        var category = await _categoriesRepository.GetByNameAsync(inputModel.Category, cancellationToken)
+            ?? throw new EntityNotFoundException(nameof(Category), inputModel.Category);
+
+        var product = new Product(inputModel.Name, inputModel.Description, inputModel.Price,
             inputModel.Quantity, inputModel.ImageUrl, seller, category);
 
         await _productsRepository.AddAsync(product, cancellationToken);
@@ -53,10 +61,10 @@ internal sealed class ProductsService : IProductsService
         var product = await _productsRepository.GetAsync(inputModel.Id, cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Product), inputModel.Id);
 
-        if (product.CategoryId != inputModel.CategoryId)
+        if (product.Category.Name != inputModel.Category)
         {
-            var category = await _categoriesRepository.GetAsync(inputModel.CategoryId, cancellationToken)
-                ?? throw new EntityNotFoundException(nameof(Category), inputModel.CategoryId);
+            var category = await _categoriesRepository.GetByNameAsync(inputModel.Category, cancellationToken)
+                ?? throw new EntityNotFoundException(nameof(Category), inputModel.Category);
 
             product.ChangeCategory(category);
         }

@@ -1,4 +1,6 @@
-﻿namespace SuperStore.MVC.ViewModels.Products;
+﻿using SuperStore.Application.OutputModels;
+
+namespace SuperStore.MVC.ViewModels.Products;
 
 public class ProductViewModel : ViewModelBase
 {
@@ -7,8 +9,25 @@ public class ProductViewModel : ViewModelBase
     public string Description { get; set; }
     public decimal Price { get; set; }
     public int Quantity { get; set; }
-    public int CategoryId { get; set; }
+    public string Category { get; set; }
     public string? ImageUrl { get; set; }
     public DateTimeOffset CreatedOn { get; set; }
     public DateTimeOffset UpdatedOn { get; set; }
+
+    public ProductViewModel()
+    {
+    }
+
+    public ProductViewModel(ProductOutputModel outputModel)
+    {
+        Id = outputModel.Id;
+        Name = outputModel.Name;
+        Description = outputModel.Description;
+        Price = outputModel.Price;
+        Quantity = outputModel.Quantity;
+        Category = outputModel.Category;
+        ImageUrl = outputModel.ImageUrl;
+        CreatedOn = outputModel.CreatedOn;
+        UpdatedOn = outputModel.UpdatedOn;
+    }
 }

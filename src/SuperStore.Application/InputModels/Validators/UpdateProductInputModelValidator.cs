@@ -20,8 +20,8 @@ public sealed class UpdateProductInputModelValidator : AbstractValidator<UpdateP
         RuleFor(x => x.Quantity)
             .GreaterThanOrEqualTo(0);
 
-        RuleFor(x => x.CategoryId)
-            .GreaterThanOrEqualTo(1);
+        RuleFor(x => x.Category)
+            .NotEmpty();
 
         RuleFor(x => x.Id)
             .GreaterThanOrEqualTo(1);

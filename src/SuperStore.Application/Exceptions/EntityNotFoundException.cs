@@ -6,4 +6,9 @@ public sealed class EntityNotFoundException : ApplicationException
         : base($"Entidade {entityName} com id {entityId} não foi encontrada")
     {
     }
+
+    public EntityNotFoundException(string entityName, string identifier)
+        : base($"Entidade {entityName} com identificador {identifier} não foi encontrada")
+    {
+    }
 }

@@ -51,6 +51,7 @@ public class IdentitiesController : Controller
         if (signInOutputModel.Succeeded)
             return RedirectToAction("Index", "Home");
 
+        //TODO: Service could return the errors instead of the bools
         if (signInOutputModel.IsLockedOut)
             signInViewModel.AddError("Email", "Usuário está bloqueado. Tente novamente mais tarde.");
 
@@ -87,7 +88,7 @@ public class IdentitiesController : Controller
 
         try
         {
-            await _usersService.CreateAsync(inputModel, CancellationToken.None);
+            await _usersService.CreateAsync(inputModel, Request.HttpContext.RequestAborted);
         }
         catch (UserCreationException ex)
         {

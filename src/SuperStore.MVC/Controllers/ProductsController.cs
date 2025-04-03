@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,66 +7,52 @@ using SuperStore.MVC.ViewModels.Products;
 
 namespace SuperStore.MVC.Controllers;
 
+[Authorize]
 [Route("Products")]
 public class ProductsController : Controller
 {
     private readonly IProductsService _productsService;
+    private readonly ICategoriesService _categoriesService;
     private readonly IValidator<CreateProductInputModel> _createProductValidator;
     private readonly IValidator<UpdateProductInputModel> _updateProductValidator;
 
     public ProductsController(
         IProductsService productsService,
+        ICategoriesService categoriesService,
         IValidator<CreateProductInputModel> createProductValidator,
         IValidator<UpdateProductInputModel> updateProductValidator)
     {
         _productsService = productsService;
+        _categoriesService = categoriesService;
         _createProductValidator = createProductValidator;
         _updateProductValidator = updateProductValidator;
     }
 
+    [AllowAnonymous]
     [HttpGet("Showcase")]
     public async Task<IActionResult> ShowcaseAsync()
     {
-        var products = await _productsService.GetAsync(Request.HttpContext.RequestAborted);
+        var products = await _productsService.ShowcaseAsync(Request.HttpContext.RequestAborted);
 
-        return View(products.Select(p => new ProductViewModel
-        {
-            Id = p.Id,
-            Name = p.Name,
-            Description = p.Description,
-            Price = p.Price,
-            CreatedOn = p.CreatedOn,
-            UpdatedOn = p.UpdatedOn,
-            Quantity = p.Quantity
-        }));
+        return View("Index", products.Select(p => new ProductViewModel(p)));
     }
 
     [Authorize]
     [HttpGet("Index")]
     public async Task<IActionResult> IndexAsync()
     {
-        //get products from seller
-        var userIdClaim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
+        var products = await _productsService.GetAsync(Request.HttpContext.RequestAborted);
 
-        var products = await _productsService.GetAsync(userIdClaim.Value, CancellationToken.None);
-
-        //create a ctor for ProductViewModel that receives a ProductOutputModel
-        return View(products.Select(p => new ProductViewModel
-        {
-            Id = p.Id,
-            Name = p.Name,
-            Description = p.Description,
-            Price = p.Price,
-            CreatedOn = p.CreatedOn,
-            UpdatedOn = p.UpdatedOn,
-            Quantity = p.Quantity
-        }));
+        return View(products.Select(p => new ProductViewModel(p)));
     }
 
     [Authorize]
     [HttpGet("Create")]
-    public IActionResult Create()
+    public async Task<IActionResult> CreateAsync()
     {
+        var categories = await _categoriesService.GetAsync(Request.HttpContext.RequestAborted);
+        ViewData["Categories"] = categories;
+
         return View();
     }
 
@@ -76,7 +61,7 @@ public class ProductsController : Controller
     public async Task<IActionResult> CreateAsync(ProductViewModel viewModel)
     {
         var inputModel = new CreateProductInputModel(viewModel.Name, viewModel.Description, viewModel.Price,
-            viewModel.Quantity, viewModel.ImageUrl, viewModel.CategoryId);
+            viewModel.Quantity, viewModel.ImageUrl, viewModel.Category);
 
         var validationResult = await _createProductValidator.ValidateAsync(inputModel, CancellationToken.None);
 
@@ -89,8 +74,7 @@ public class ProductsController : Controller
         }
 
         await _productsService.CreateAsync(inputModel, CancellationToken.None);
-
-        return View(viewModel);
+        return RedirectToAction("Index", "Products");
     }
 
     [Authorize]
@@ -105,7 +89,7 @@ public class ProductsController : Controller
     public async Task<IActionResult> EditAsync(ProductViewModel viewModel)
     {
         var inputModel = new UpdateProductInputModel(viewModel.Id, viewModel.Name, viewModel.Description, viewModel.Price,
-            viewModel.Quantity, viewModel.ImageUrl, viewModel.CategoryId);
+            viewModel.Quantity, viewModel.ImageUrl, viewModel.Category);
 
         var validationResult = await _updateProductValidator.ValidateAsync(inputModel, CancellationToken.None);
 
@@ -118,7 +102,13 @@ public class ProductsController : Controller
         }
 
         await _productsService.UpdateAsync(inputModel, CancellationToken.None);
+        return RedirectToAction("Index", "Products");
+    }
 
-        return View(viewModel);
+    [HttpGet("Delete")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _productsService.DeleteAsync(id, CancellationToken.None);
+        return RedirectToAction("Index", "Products");
     }
 }
