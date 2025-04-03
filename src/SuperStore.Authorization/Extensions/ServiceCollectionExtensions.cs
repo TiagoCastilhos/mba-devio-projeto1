@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
         services.ConfigureApplicationCookie(options =>
         {
             options.Cookie.HttpOnly = true;
-            options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+            options.ExpireTimeSpan = TimeSpan.FromHours(8);
 
             options.LoginPath = "/Identities/SignIn";
             options.AccessDeniedPath = "/Identities/AccessDenied";

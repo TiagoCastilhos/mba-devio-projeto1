@@ -16,5 +16,8 @@ internal sealed class SellerConfiguration : ConfigurationBase<Seller>
         builder.Property(sp => sp.UserId)
             .HasMaxLength(40)
             .IsRequired();
+
+        builder.HasIndex(s => s.UserId)
+            .IsUnique(true);
     }
 }

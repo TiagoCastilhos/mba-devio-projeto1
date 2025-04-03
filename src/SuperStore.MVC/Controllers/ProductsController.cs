@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using SuperStore.MVC.ViewModels.Products;
 
 namespace SuperStore.MVC.Controllers;
 
+[Route("Products")]
 public class ProductsController : Controller
 {
     private readonly IProductsService _productsService;
@@ -45,7 +47,9 @@ public class ProductsController : Controller
     public async Task<IActionResult> IndexAsync()
     {
         //get products from seller
-        var products = await _productsService.GetAsync(CancellationToken.None);
+        var userIdClaim = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier);
+
+        var products = await _productsService.GetAsync(userIdClaim.Value, CancellationToken.None);
 
         //create a ctor for ProductViewModel that receives a ProductOutputModel
         return View(products.Select(p => new ProductViewModel
@@ -71,7 +75,8 @@ public class ProductsController : Controller
     [HttpPost("Create")]
     public async Task<IActionResult> CreateAsync(ProductViewModel viewModel)
     {
-        var inputModel = new CreateProductInputModel(viewModel.Name, viewModel.Description, viewModel.Price, viewModel.Quantity, viewModel.CategoryId);
+        var inputModel = new CreateProductInputModel(viewModel.Name, viewModel.Description, viewModel.Price,
+            viewModel.Quantity, viewModel.ImageUrl, viewModel.CategoryId);
 
         var validationResult = await _createProductValidator.ValidateAsync(inputModel, CancellationToken.None);
 
@@ -99,7 +104,8 @@ public class ProductsController : Controller
     [HttpPost("Edit")]
     public async Task<IActionResult> EditAsync(ProductViewModel viewModel)
     {
-        var inputModel = new UpdateProductInputModel(viewModel.Id, viewModel.Name, viewModel.Description, viewModel.Price, viewModel.Quantity, viewModel.CategoryId);
+        var inputModel = new UpdateProductInputModel(viewModel.Id, viewModel.Name, viewModel.Description, viewModel.Price,
+            viewModel.Quantity, viewModel.ImageUrl, viewModel.CategoryId);
 
         var validationResult = await _updateProductValidator.ValidateAsync(inputModel, CancellationToken.None);
 

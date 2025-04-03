@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
 using SuperStore.Application.Abstractions.Services;
 using SuperStore.Application.Exceptions;
 using SuperStore.Application.InputModels;
@@ -7,21 +7,19 @@ using SuperStore.Data.Abstractions.Repositories;
 using SuperStore.Model.Entities;
 
 namespace SuperStore.Application.Services;
-
-internal sealed class CategoriesService : ICategoriesService
+internal sealed class CategoriesService : ServiceBase, ICategoriesService
 {
     private readonly ICategoriesRepository _categoriesRepository;
     private readonly ISellersRepository _sellersRepository;
-    private readonly SignInManager<IdentityUser> _signInManager;
 
     public CategoriesService(
-        ICategoriesRepository categoriesRepository, 
-        ISellersRepository sellersRepository, 
-        SignInManager<IdentityUser> signInManager)
+        ICategoriesRepository categoriesRepository,
+        ISellersRepository sellersRepository,
+        IHttpContextAccessor httpContextAccessor)
+        : base(httpContextAccessor)
     {
         _categoriesRepository = categoriesRepository;
         _sellersRepository = sellersRepository;
-        _signInManager = signInManager;
     }
 
     public async Task<IReadOnlyCollection<CategoryOutputModel>> GetAsync(CancellationToken cancellationToken)
@@ -30,10 +28,21 @@ internal sealed class CategoriesService : ICategoriesService
         return [.. categories.Select(category => new CategoryOutputModel(category))];
     }
 
+    public async Task<CategoryOutputModel?> GetAsync(int id, CancellationToken cancellationToken)
+    {
+        var category = await _categoriesRepository.GetAsync(id, cancellationToken);
+
+        if (category == null)
+            return null;
+
+        return new CategoryOutputModel(category);
+    }
+
     public async Task<CategoryOutputModel> CreateAsync(CreateCategoryInputModel inputModel, CancellationToken cancellationToken)
     {
-        var a = _signInManager.Context.User;
-        var seller = await _sellersRepository.GetAsync(1, cancellationToken); //Get user id from request
+        var userId = GetUserId();
+
+        var seller = await _sellersRepository.GetAsync(userId!, cancellationToken);
 
         var category = new Category(inputModel.Name, seller);
         await _categoriesRepository.AddAsync(category, cancellationToken);

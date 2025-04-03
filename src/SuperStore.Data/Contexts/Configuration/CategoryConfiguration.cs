@@ -16,5 +16,8 @@ internal sealed class CategoryConfiguration : ConfigurationBase<Category>
         builder.HasOne(c => c.CreatedBy)
             .WithMany(sp => sp.Categories)
             .HasForeignKey(c => c.CreatedById);
+
+        builder.HasIndex(c => c.Name)
+            .IsUnique(false);
     }
 }

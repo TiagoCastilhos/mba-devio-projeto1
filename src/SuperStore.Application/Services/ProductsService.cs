@@ -28,12 +28,19 @@ internal sealed class ProductsService : IProductsService
         return [.. products.Select(product => new ProductOutputModel(product))];
     }
 
+    public async Task<IReadOnlyCollection<ProductOutputModel>> GetAsync(string userId, CancellationToken cancellationToken)
+    {
+        var products = await _productsRepository.GetAsync(userId, cancellationToken);
+        return [.. products.Select(product => new ProductOutputModel(product))];
+    }
+
     public async Task<ProductOutputModel> CreateAsync(CreateProductInputModel inputModel, CancellationToken cancellationToken)
     {
         var seller = await _sellersRepository.GetAsync(1, cancellationToken); //Get user id from request
         var category = await _categoriesRepository.GetAsync(inputModel.CategoryId, cancellationToken);
 
-        var product = new Product(inputModel.Name, inputModel.Description, inputModel.Price, inputModel.Quantity, seller, category);
+        var product = new Product(inputModel.Name, inputModel.Description, inputModel.Price, 
+            inputModel.Quantity, inputModel.ImageUrl, seller, category);
 
         await _productsRepository.AddAsync(product, cancellationToken);
         await _productsRepository.SaveChangesAsync(cancellationToken);
@@ -58,6 +65,7 @@ internal sealed class ProductsService : IProductsService
         product.ChangeDescription(inputModel.Description);
         product.ChangePrice(inputModel.Price);
         product.ChangeQuantity(inputModel.Quantity);
+        product.ChangeImage(inputModel.ImageUrl);
 
         await _productsRepository.SaveChangesAsync(cancellationToken);
 

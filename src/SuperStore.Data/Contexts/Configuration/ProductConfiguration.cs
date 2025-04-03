@@ -24,6 +24,10 @@ internal sealed class ProductConfiguration : ConfigurationBase<Product>
         builder.Property(p => p.Quantity)
             .IsRequired();
 
+        builder.Property(p => p.ImageUrl)
+            .IsRequired(false)
+            .HasMaxLength(200);
+
         builder.HasOne(p => p.CreatedBy)
             .WithMany(sp => sp.Products)
             .HasForeignKey(p => p.CreatedById);

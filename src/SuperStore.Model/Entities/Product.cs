@@ -7,13 +7,14 @@ public class Product : EntityBase
     public Category Category { get; protected set; }
     public decimal Price { get; protected set; }
     public int Quantity { get; protected set; }
+    public string ImageUrl { get; protected set; }
 
     public int CreatedById { get; protected set; }
     public int CategoryId { get; protected set; }
 
     protected Product() { }
 
-    public Product(string name, string description, decimal price, int quantity, Seller createdBy, Category category)
+    public Product(string name, string description, decimal price, int quantity, string imageUrl, Seller createdBy, Category category)
     {
         AssertionConcern.AssertArgumentNotNullOrEmpty(name, nameof(name));
         AssertionConcern.AssertArgumentNotNullOrEmpty(description, nameof(description));
@@ -28,6 +29,7 @@ public class Product : EntityBase
         Category = category;
         Price = price;
         Quantity = quantity;
+        ImageUrl = imageUrl;
     }
 
     public void ChangeName(string name)
@@ -56,6 +58,11 @@ public class Product : EntityBase
         AssertionConcern.AssertArgumentNotNegative(quantity, nameof(quantity));
 
         Quantity = quantity;
+    }
+
+    public void ChangeImage(string imageUrl)
+    {
+        ImageUrl = imageUrl;
     }
 
     public void ChangeCategory(Category category)

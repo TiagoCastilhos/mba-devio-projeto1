@@ -7,6 +7,8 @@ using SuperStore.MVC.ViewModels.Categories;
 
 namespace SuperStore.MVC.Controllers;
 
+[Authorize]
+[Route("Categories")]
 public class CategoriesController : Controller
 {
     private readonly ICategoriesService _categoriesService;
@@ -14,8 +16,8 @@ public class CategoriesController : Controller
     private readonly IValidator<UpdateCategoryInputModel> _updateCategoryValidator;
 
     public CategoriesController(
-        ICategoriesService categoriesService, 
-        IValidator<CreateCategoryInputModel> createCategoryValidator, 
+        ICategoriesService categoriesService,
+        IValidator<CreateCategoryInputModel> createCategoryValidator,
         IValidator<UpdateCategoryInputModel> updateCategoryValidator)
     {
         _categoriesService = categoriesService;
@@ -23,7 +25,6 @@ public class CategoriesController : Controller
         _updateCategoryValidator = updateCategoryValidator;
     }
 
-    [Authorize]
     [HttpGet("Index")]
     public async Task<IActionResult> IndexAsync()
     {
@@ -38,21 +39,19 @@ public class CategoriesController : Controller
         }));
     }
 
-    [Authorize]
     [HttpGet("Create")]
     public IActionResult Create()
     {
         return View();
     }
 
-    [Authorize]
     [HttpPost("Create")]
     public async Task<IActionResult> CreateAsync(CategoryViewModel viewModel)
     {
         var inputModel = new CreateCategoryInputModel(viewModel.Name);
 
         var validationResult = await _createCategoryValidator.ValidateAsync(inputModel, CancellationToken.None);
-        
+
         if (!validationResult.IsValid)
         {
             var errors = validationResult.ToDictionary();
@@ -61,19 +60,27 @@ public class CategoriesController : Controller
             return View(viewModel);
         }
 
-        var category = await _categoriesService.CreateAsync(inputModel, CancellationToken.None);
-
-        return View(viewModel);
+        await _categoriesService.CreateAsync(inputModel, CancellationToken.None);
+        return RedirectToAction("Index", "Categories");
     }
 
-    [Authorize]
-    [HttpGet("Update")]
-    public IActionResult Index()
+    [HttpGet("Edit")]
+    public async Task<IActionResult> Edit(int id)
     {
-        return View();
+        var category = await _categoriesService.GetAsync(id, CancellationToken.None);
+
+        if (category == null)
+            return RedirectToAction("Index", "Categories");
+
+        return View(new CategoryViewModel
+        {
+            CreatedOn = category.CreatedOn,
+            Id = category.Id,
+            Name = category.Name,
+            UpdatedOn = category.UpdatedOn
+        });
     }
 
-    [Authorize]
     [HttpPost("Edit")]
     public async Task<IActionResult> EditAsync(CategoryViewModel viewModel)
     {
@@ -89,8 +96,14 @@ public class CategoriesController : Controller
             return View(viewModel);
         }
 
-        var category = await _categoriesService.UpdateAsync(inputModel, CancellationToken.None);
+        await _categoriesService.UpdateAsync(inputModel, CancellationToken.None);
+        return RedirectToAction("Index", "Categories");
+    }
 
-        return View(viewModel);
+    [HttpGet("Delete")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        await _categoriesService.DeleteAsync(id, CancellationToken.None);
+        return RedirectToAction("Index", "Categories");
     }
 }

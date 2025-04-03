@@ -1,4 +1,5 @@
-﻿using SuperStore.Data.Abstractions.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using SuperStore.Data.Abstractions.Contexts;
 using SuperStore.Data.Abstractions.Repositories;
 using SuperStore.Model.Entities;
 
@@ -8,5 +9,10 @@ internal sealed class ProductsRepository : RepositoryBase<Product>, IProductsRep
     public ProductsRepository(ISuperStoreDbContext context)
         : base(context, context.Products)
     {
+    }
+
+    public async Task<IReadOnlyCollection<Product>> GetAsync(string userId, CancellationToken cancellationToken)
+    {
+        return await DbSet.Where(c => c.CreatedBy.UserId == userId).ToListAsync(cancellationToken);
     }
 }
