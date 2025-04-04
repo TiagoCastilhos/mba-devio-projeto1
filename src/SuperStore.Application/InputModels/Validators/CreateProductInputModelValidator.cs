@@ -6,6 +6,7 @@ public sealed class CreateProductInputModelValidator : AbstractValidator<CreateP
 {
     public CreateProductInputModelValidator()
     {
+        //TODO: Translate messages
         RuleFor(x => x.Name)
             .NotEmpty()
             .MaximumLength(50);

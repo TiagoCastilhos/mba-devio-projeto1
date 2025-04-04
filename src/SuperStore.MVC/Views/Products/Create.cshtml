@@ -75,13 +75,27 @@
         </div>
         <p></p>
 
-        <select class="form-select" aria-label="Default select example" asp-for="@Model.Category">
+        <select class="form-select @(Model?.HasErrors("Category") == true ? "is-invalid" : "")" aria-label="Default select example" asp-for="@Model.Category">
             <option value="" selected>Selecionar categoria</option>
-            @foreach (var category in ViewData["Categories"] as IEnumerable<SuperStore.Application.OutputModels.CategoryOutputModel>)
+            @if (ViewData["Categories"] != null)
             {
-                <option value="@category.Name">@category.Name</option>
+                @foreach (var category in ViewData["Categories"] as IEnumerable<SuperStore.Application.OutputModels.CategoryOutputModel>)
+                {
+                    <option value="@category.Name">@category.Name</option>
+                }
             }
         </select>
+        @if (Model?.HasErrors("Category") == true)
+        {
+            <div class="invalid-feedback">
+                <ul>
+                    @foreach (var error in Model.GetErrors("Category"))
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        }
         <p></p>
 
         <div class="input-group mb-3">

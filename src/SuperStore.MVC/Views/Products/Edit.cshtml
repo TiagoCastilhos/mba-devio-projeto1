@@ -1,15 +1,17 @@
 ﻿@{
 
-    ViewData["Title"] = "Editar categoria";
+    ViewData["Title"] = "Editar produto";
 }
-@model SuperStore.MVC.ViewModels.Categories.CategoryViewModel
+@model SuperStore.MVC.ViewModels.Products.ProductViewModel
 <div class="form-signin w-50 m-auto">
-    <form method="post" asp-controller="Categories" asp-action="Edit">
-        <h1 class="h3 mb-3 fw-normal">Editar categoria</h1>
+    <form method="post" asp-controller="Products" asp-action="Edit" enctype="multipart/form-data">
+        <h1 class="h3 mb-3 fw-normal">Editar produto</h1>
+
+        <input type="hidden" asp-for="@Model.Id" />
 
         <div class="form-floating">
             <input asp-for="@Model.Name" class="form-control @(Model?.HasErrors("Name") == true ? "is-invalid" : "")" id="nameInput" required>
-            <label for="nameInput"></label>
+            <label for="nameInput">Nome</label>
             @if (Model?.HasErrors("Name") == true)
             {
                 <div class="invalid-feedback">
@@ -21,8 +23,72 @@
                     </ul>
                 </div>
             }
+        </div>
+        <p></p>
 
-            <input type="hidden" asp-for="@Model.Id" />
+        <div class="form-floating">
+            <input asp-for="@Model.Description" class="form-control @(Model?.HasErrors("Description") == true ? "is-invalid" : "")" id="descriptionInput" required>
+            <label for="descriptionInput">Descrição</label>
+            @if (Model?.HasErrors("Description") == true)
+            {
+                <div class="invalid-feedback">
+                    <ul>
+                        @foreach (var error in Model.GetErrors("Description"))
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <p></p>
+
+        <div class="form-floating">
+            <input type="number" step="0.01" asp-for="@Model.Price" class="form-control @(Model?.HasErrors("Price") == true ? "is-invalid" : "")" id="priceInput" required>
+            <label for="priceInput">Preço (R$)</label>
+            @if (Model?.HasErrors("Price") == true)
+            {
+                <div class="invalid-feedback">
+                    <ul>
+                        @foreach (var error in Model.GetErrors("Price"))
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <p></p>
+
+        <div class="form-floating">
+            <input type="number" step="1" asp-for="@Model.Quantity" class="form-control @(Model?.HasErrors("Quantity") == true ? "is-invalid" : "")" id="quantityInput" required>
+            <label for="quantityInput">Quantidade (un)</label>
+            @if (Model?.HasErrors("Quantity") == true)
+            {
+                <div class="invalid-feedback">
+                    <ul>
+                        @foreach (var error in Model.GetErrors("Quantity"))
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <p></p>
+
+        <select class="form-select" aria-label="Default select example" asp-for="@Model.Category">
+            <option value="" selected>Selecionar categoria</option>
+            @foreach (var category in ViewData["Categories"] as IEnumerable<SuperStore.Application.OutputModels.CategoryOutputModel>)
+            {
+                <option value="@category.Name">@category.Name</option>
+            }
+        </select>
+        <p></p>
+
+        <div class="input-group mb-3">
+            <input name="image" type="file" accept="image/*" class="form-control" id="imageInput">
+            <label class="input-group-text" for="imageInput">Upload</label>
         </div>
         <p></p>
 

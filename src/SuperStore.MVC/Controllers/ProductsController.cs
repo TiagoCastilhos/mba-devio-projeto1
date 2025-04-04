@@ -53,9 +53,7 @@ public class ProductsController : Controller
     [HttpGet("Create")]
     public async Task<IActionResult> CreateAsync()
     {
-        var categories = await _categoriesService.GetAsync(Request.HttpContext.RequestAborted);
-        ViewData["Categories"] = categories;
-
+        await FillCategoriesAsync();
         return View();
     }
 
@@ -88,15 +86,23 @@ public class ProductsController : Controller
     }
 
     [Authorize]
-    [HttpGet("Update")]
-    public IActionResult Index()
+    [HttpGet("Edit")]
+    public async Task<IActionResult> EditAsync(int id)
     {
-        return View();
+        var product = await _productsService.GetAsync(id, Request.HttpContext.RequestAborted);
+
+        if (product == null)
+            return RedirectToAction("Index", "Products");
+
+        await FillCategoriesAsync();
+
+        return View(new ProductViewModel(product));
     }
 
     [Authorize]
     [HttpPost("Edit")]
-    public async Task<IActionResult> EditAsync(ProductViewModel viewModel)
+    [RequestSizeLimit(4 * 1024 * 1024)]
+    public async Task<IActionResult> EditAsync(ProductViewModel viewModel, IFormFile? image)
     {
         var inputModel = new UpdateProductInputModel(viewModel.Id, viewModel.Name, viewModel.Description, viewModel.Price,
             viewModel.Quantity, viewModel.ImageUrl, viewModel.Category);
@@ -108,7 +114,14 @@ public class ProductsController : Controller
             var errors = validationResult.ToDictionary();
             viewModel.SetErrors(errors);
 
+            await FillCategoriesAsync();
             return View(viewModel);
+        }
+
+        if (image != null)
+        {
+            var imagePath = await UploadImageAsync(image);
+            inputModel.ImageUrl = imagePath;
         }
 
         await _productsService.UpdateAsync(inputModel, Request.HttpContext.RequestAborted);
@@ -122,6 +135,13 @@ public class ProductsController : Controller
         return RedirectToAction("Index", "Products");
     }
 
+    private async Task FillCategoriesAsync()
+    {
+        var categories = await _categoriesService.GetAsync(Request.HttpContext.RequestAborted);
+        ViewData["Categories"] = categories;
+    }
+
+    //TODO: move to a specific service
     private async Task<string> UploadImageAsync(IFormFile image)
     {
         var imageUrl = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";

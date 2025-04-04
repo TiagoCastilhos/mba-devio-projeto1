@@ -38,6 +38,16 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         return [.. products.Select(product => new ProductOutputModel(product))];
     }
 
+    public async Task<ProductOutputModel?> GetAsync(int id, CancellationToken cancellationToken)
+    {
+        var product = await _productsRepository.GetAsync(id, cancellationToken);
+        
+        if (product == null)
+            return null;
+        
+        return new ProductOutputModel(product);
+    }
+
     public async Task<ProductOutputModel> CreateAsync(CreateProductInputModel inputModel, CancellationToken cancellationToken)
     {
         var userId = GetUserId()!;
@@ -73,7 +83,9 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         product.ChangeDescription(inputModel.Description);
         product.ChangePrice(inputModel.Price);
         product.ChangeQuantity(inputModel.Quantity);
-        product.ChangeImage(inputModel.ImageUrl);
+
+        if (!string.IsNullOrEmpty(inputModel.ImageUrl))
+            product.ChangeImage(inputModel.ImageUrl);
 
         await _productsRepository.SaveChangesAsync(cancellationToken);
 

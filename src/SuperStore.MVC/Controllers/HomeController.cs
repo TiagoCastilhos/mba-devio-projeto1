@@ -1,26 +1,26 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SuperStore.Application.Abstractions.Services;
 using SuperStore.MVC.Models;
+using SuperStore.MVC.ViewModels.Products;
 
 namespace SuperStore.MVC.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly IProductsService _productsService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IProductsService productsService)
     {
-        _logger = logger;
+        _productsService = productsService;
     }
 
-    public IActionResult Index()
+    [HttpGet("")]
+    public async Task<IActionResult> IndexAsync()
     {
-        return View();
-    }
+        var products = await _productsService.ShowcaseAsync(Request.HttpContext.RequestAborted);
 
-    public IActionResult Privacy()
-    {
-        return View();
+        return View(products.Select(p => new ProductViewModel(p)));
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
