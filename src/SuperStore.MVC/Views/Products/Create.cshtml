@@ -1,10 +1,10 @@
 ﻿@{
 
-    ViewData["Title"] = "Criar categoria";
+    ViewData["Title"] = "Criar produto";
 }
 @model SuperStore.MVC.ViewModels.Products.ProductViewModel
 <div class="form-signin w-50 m-auto">
-    <form method="post" asp-controller="Products" asp-action="Create">
+    <form method="post" asp-controller="Products" asp-action="Create" enctype="multipart/form-data">
         <h1 class="h3 mb-3 fw-normal">Novo produto</h1>
 
         <div class="form-floating">
@@ -82,6 +82,12 @@
                 <option value="@category.Name">@category.Name</option>
             }
         </select>
+        <p></p>
+
+        <div class="input-group mb-3">
+            <input name="image" type="file" accept="image/*" class="form-control" id="imageInput">
+            <label class="input-group-text" for="imageInput">Upload</label>
+        </div>
         <p></p>
 
         <button class="btn btn-primary w-50 py-2" type="submit">Criar</button>

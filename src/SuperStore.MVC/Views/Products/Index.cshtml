@@ -5,7 +5,7 @@
 @model IEnumerable<SuperStore.MVC.ViewModels.Products.ProductViewModel>;
 <h3>Produtos</h3>
 <div class="d-flex justify-content-evenly align-items-start">
-    <div class="card" style="width: 18rem;">
+    <div class="card" style="width: 12rem;">
         <img src="~/images/placeholder.jpg" class="card-img-top" alt="new product">
         <div class="card-body">
             <a class="h5 card-title" asp-controller="Products" asp-action="Create">Novo produto</a>
@@ -13,8 +13,8 @@
     </div>
     @foreach (var product in Model)
     {
-        <div class="card" style="width: 18rem;">
-            <img src="@(!string.IsNullOrEmpty(product.ImageUrl) ? product.ImageUrl : "/images/placeholder.jpg")" class="card-img-top" alt="product image">
+        <div class="card" style="width: 12rem;">
+            <img src="@(!string.IsNullOrEmpty(product.ImageUrl) ? $"/images/{product.ImageUrl}" : "/images/placeholder.jpg")" class="card-img-top" alt="product image">
             <div class="card-body">
                 <h5 class="card-title">@product.Name</h5>
                 <p class="card-text">@product.Description</p>
