@@ -61,6 +61,7 @@ public class ProductsController : Controller
 
     [Authorize]
     [HttpPost("Create")]
+    [RequestSizeLimit(4 * 1024 * 1024)]
     public async Task<IActionResult> CreateAsync(ProductViewModel viewModel, IFormFile? image)
     {
         var inputModel = new CreateProductInputModel(viewModel.Name, viewModel.Description, viewModel.Price,
