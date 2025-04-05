@@ -40,9 +40,11 @@ internal sealed class ProductsService : ServiceBase, IProductsService
 
     public async Task<ProductOutputModel?> GetAsync(int id, CancellationToken cancellationToken)
     {
+        var userId = GetUserId()!;
+
         var product = await _productsRepository.GetAsync(id, cancellationToken);
-        
-        if (product == null)
+
+        if (product == null || product.CreatedBy.UserId != userId)
             return null;
         
         return new ProductOutputModel(product);
@@ -71,6 +73,11 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         var product = await _productsRepository.GetAsync(inputModel.Id, cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Product), inputModel.Id);
 
+        var userId = GetUserId()!;
+
+        if (product.CreatedBy.UserId != userId)
+            throw new EntityNotFoundException(nameof(Product), inputModel.Id);
+
         if (product.Category.Name != inputModel.Category)
         {
             var category = await _categoriesRepository.GetByNameAsync(inputModel.Category, cancellationToken)
@@ -96,6 +103,11 @@ internal sealed class ProductsService : ServiceBase, IProductsService
     {
         var product = await _productsRepository.GetAsync(id, cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Product), id);
+
+        var userId = GetUserId()!;
+
+        if (product.CreatedBy.UserId != userId)
+            throw new EntityNotFoundException(nameof(Product), id);
 
         _productsRepository.Delete(product);
         await _productsRepository.SaveChangesAsync(cancellationToken);
