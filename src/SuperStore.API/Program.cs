@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using SuperStore.API.Middlewares;
 using SuperStore.Application.Extensions;
 using SuperStore.Authorization.Extensions;
 using SuperStore.CrossCutting.Options;
@@ -65,7 +66,6 @@ public class Program
 
         if (app.Environment.IsDevelopment())
         {
-            app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SuperStore API v1"));
         }
@@ -77,6 +77,8 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        app.UseMiddleware<ServiceExceptionMiddleware>();
 
         await ProvideInfrastructureAsync(environmentOptions, builder.Services);
         await app.RunAsync();

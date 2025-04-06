@@ -30,7 +30,7 @@ public class ProductsController : ControllerBase
 
     [HttpGet("")]
     [ProducesResponseType(typeof(IEnumerable<ProductOutputModel>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAsync()
+    public async Task<IActionResult> GetAllAsync()
     {
         var products = await _productsService.GetAsync(Request.HttpContext.RequestAborted);
 
@@ -38,8 +38,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ActionName(nameof(GetAsync))]
     [ProducesResponseType(typeof(ProductOutputModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAsync([FromRoute] int id)
     {
         var product = await _productsService.GetAsync(id, Request.HttpContext.RequestAborted);
@@ -49,7 +50,8 @@ public class ProductsController : ControllerBase
 
     [HttpPost("")]
     [ProducesResponseType(typeof(ProductOutputModel), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateAsync([FromBody] CreateProductInputModel inputModel)
     {
         var product = await _productsService.CreateAsync(inputModel, Request.HttpContext.RequestAborted);
@@ -58,20 +60,20 @@ public class ProductsController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(ProductOutputModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateProductInputModel inputModel)
     {
         if (id != inputModel.Id)
-            return BadRequest("Product ID mismatch.");
+            return BadRequest("Id do produto da rota deve ser o mesmo do corpo da mensagem.");
 
         var product = await _productsService.UpdateAsync(inputModel, Request.HttpContext.RequestAborted);
         return Ok(product);
     }
 
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         await _productsService.DeleteAsync(id, Request.HttpContext.RequestAborted);

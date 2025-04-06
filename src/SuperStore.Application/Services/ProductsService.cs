@@ -45,8 +45,8 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         var product = await _productsRepository.GetAsync(id, cancellationToken);
 
         if (product == null || product.CreatedBy.UserId != userId)
-            return null;
-        
+            throw new EntityNotFoundException(nameof(Product), id);
+
         return new ProductOutputModel(product);
     }
 

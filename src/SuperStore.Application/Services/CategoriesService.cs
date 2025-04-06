@@ -35,7 +35,7 @@ internal sealed class CategoriesService : ServiceBase, ICategoriesService
         var category = await _categoriesRepository.GetAsync(id, cancellationToken);
 
         if (category == null || category.CreatedBy.UserId != userId)
-            return null;
+            throw new EntityNotFoundException(nameof(Category), id);
 
         return new CategoryOutputModel(category);
     }

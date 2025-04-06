@@ -20,17 +20,18 @@ public class CategoriesController : ControllerBase
 
     [HttpGet("")]
     [ProducesResponseType(typeof(IEnumerable<CategoryOutputModel>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAsync()
+    public async Task<IActionResult> GetAllAsync()
     {
         var categories = await _categoriesService.GetAsync(Request.HttpContext.RequestAborted);
         return Ok(categories);
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(IEnumerable<CategoryOutputModel>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAsync(int id)
+    [ActionName(nameof(GetAsync))]
+    [ProducesResponseType(typeof(CategoryOutputModel), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAsync([FromRoute] int id)
     {
-        var categories = await _categoriesService.GetAsync(Request.HttpContext.RequestAborted);
+        var categories = await _categoriesService.GetAsync(id, Request.HttpContext.RequestAborted);
         return Ok(categories);
     }
 
@@ -45,20 +46,20 @@ public class CategoriesController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(CategoryOutputModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateCategoryInputModel inputModel)
     {
         if (id != inputModel.Id)
-            return BadRequest("Product ID mismatch.");
+            return BadRequest("Id da categoria da rota deve ser o mesmo do corpo da mensagem.");
 
         var category = await _categoriesService.UpdateAsync(inputModel, Request.HttpContext.RequestAborted);
         return Ok(category);
     }
 
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _categoriesService.DeleteAsync(id, Request.HttpContext.RequestAborted);
