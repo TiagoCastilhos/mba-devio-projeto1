@@ -2,8 +2,8 @@
 
 public class CategoryViewModel : ViewModelBase
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Name { get; set; }
-    public DateTimeOffset CreatedOn { get; set; }
-    public DateTimeOffset UpdatedOn { get; set; }
+    public DateTime CreatedOn { get; set; }
+    public DateTime UpdatedOn { get; set; }
 }

@@ -15,24 +15,28 @@ namespace SuperStore.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.14");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.14")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("Id");
 
@@ -50,14 +54,14 @@ namespace SuperStore.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("Id");
 
@@ -69,54 +73,54 @@ namespace SuperStore.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<bool>("EmailConfirmed")
+                    b.Property<int>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("LockoutEnabled")
+                    b.Property<int>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
+                    b.Property<int>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<bool>("TwoFactorEnabled")
+                    b.Property<int>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("Id");
 
@@ -137,14 +141,14 @@ namespace SuperStore.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("Id");
 
@@ -157,18 +161,18 @@ namespace SuperStore.Data.Migrations
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("ProviderKey")
                         .HasMaxLength(128)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -180,10 +184,10 @@ namespace SuperStore.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -195,18 +199,18 @@ namespace SuperStore.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(128)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -215,32 +219,33 @@ namespace SuperStore.Data.Migrations
 
             modelBuilder.Entity("SuperStore.Model.Entities.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
+                    b.Property<string>("CreatedOn")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 24, DateTimeKind.Unspecified).AddTicks(1876), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<int>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<DateTimeOffset>("UpdatedOn")
+                    b.Property<string>("UpdatedOn")
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 24, DateTimeKind.Unspecified).AddTicks(2477), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("Id");
 
@@ -253,39 +258,41 @@ namespace SuperStore.Data.Migrations
 
             modelBuilder.Entity("SuperStore.Model.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
+                    b.Property<string>("CreatedOn")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 24, DateTimeKind.Unspecified).AddTicks(8028), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<int>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -293,10 +300,10 @@ namespace SuperStore.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("UpdatedOn")
+                    b.Property<string>("UpdatedOn")
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 24, DateTimeKind.Unspecified).AddTicks(8558), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("Id");
 
@@ -309,34 +316,34 @@ namespace SuperStore.Data.Migrations
 
             modelBuilder.Entity("SuperStore.Model.Entities.Seller", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
+                    b.Property<string>("CreatedOn")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 25, DateTimeKind.Unspecified).AddTicks(1792), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<int>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
-                    b.Property<DateTimeOffset>("UpdatedOn")
+                    b.Property<string>("UpdatedOn")
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 25, DateTimeKind.Unspecified).AddTicks(2162), new TimeSpan(0, 0, 0, 0, 0)));
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasMaxLength(40)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("NVARCHAR(1000)");
 
                     b.HasKey("Id");
 
@@ -402,7 +409,7 @@ namespace SuperStore.Data.Migrations
                     b.HasOne("SuperStore.Model.Entities.Seller", "CreatedBy")
                         .WithMany("Categories")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
@@ -413,13 +420,13 @@ namespace SuperStore.Data.Migrations
                     b.HasOne("SuperStore.Model.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SuperStore.Model.Entities.Seller", "CreatedBy")
                         .WithMany("Products")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");

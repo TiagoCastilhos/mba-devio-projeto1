@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
+using SuperStore.Model;
 using SuperStore.Model.Entities;
 
 namespace SuperStore.Data.Contexts.Configuration;
@@ -14,22 +17,33 @@ internal abstract class ConfigurationBase<TEntity> : IEntityTypeConfiguration<TE
     {
         builder.ToTable(TableName);
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.Id)
-            .ValueGeneratedOnAdd();
 
         ConfigureEntity(builder);
 
         builder.Property(e => e.CreatedOn)
-            .HasDefaultValue(DateTimeOffset.UtcNow)
+            .HasValueGenerator<DateTimeValueGenerator>()
             .ValueGeneratedOnAdd();
 
         builder.Property(e => e.UpdatedOn)
-            .HasDefaultValue(DateTimeOffset.UtcNow)
-            .ValueGeneratedOnAddOrUpdate();
+            .HasValueGenerator<DateTimeValueGenerator>()
+            //.ValueGeneratedOnAddOrUpdate(); //TODO: this is not working, don't know why yet
+            .ValueGeneratedOnAdd();
 
         builder.Property(e => e.IsDeleted)
             .HasDefaultValue(false);
 
         builder.HasQueryFilter(e => !e.IsDeleted);
+    }
+}
+
+internal class DateTimeValueGenerator : ValueGenerator<DateTime>
+{
+    public override bool GeneratesTemporaryValues => false;
+
+    public override DateTime Next(EntityEntry entry)
+    {
+        AssertionConcern.AssertArgumentNotNull(entry, nameof(entry));
+
+        return DateTime.UtcNow;
     }
 }

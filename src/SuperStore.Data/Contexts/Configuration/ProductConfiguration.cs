@@ -30,10 +30,12 @@ internal sealed class ProductConfiguration : ConfigurationBase<Product>
 
         builder.HasOne(p => p.CreatedBy)
             .WithMany(sp => sp.Products)
-            .HasForeignKey(p => p.CreatedById);
+            .HasForeignKey(p => p.CreatedById)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(p => p.Category)
             .WithMany(c => c.Products)
-            .HasForeignKey(p => p.CategoryId);
+            .HasForeignKey(p => p.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

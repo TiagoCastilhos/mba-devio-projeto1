@@ -1,3 +1,3 @@
 ﻿namespace SuperStore.Application.InputModels;
 
-public sealed record UpdateCategoryInputModel(int Id, string Name);
+public sealed record UpdateCategoryInputModel(Guid Id, string Name);

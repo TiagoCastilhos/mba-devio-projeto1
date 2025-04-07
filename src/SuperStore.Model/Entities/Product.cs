@@ -9,8 +9,8 @@ public class Product : EntityBase
     public int Quantity { get; protected set; }
     public string ImageUrl { get; protected set; }
 
-    public int CreatedById { get; protected set; }
-    public int CategoryId { get; protected set; }
+    public Guid CreatedById { get; protected set; }
+    public Guid CategoryId { get; protected set; }
 
     protected Product() { }
 
@@ -23,6 +23,7 @@ public class Product : EntityBase
         AssertionConcern.AssertArgumentNotNegative(price, nameof(price));
         AssertionConcern.AssertArgumentNotNegative(quantity, nameof(quantity));
 
+        Id = Guid.NewGuid();
         Name = name;
         Description = description;
         CreatedBy = createdBy;

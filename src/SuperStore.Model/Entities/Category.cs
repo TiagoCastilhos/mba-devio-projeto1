@@ -8,7 +8,7 @@ public class Category : EntityBase
     public virtual IReadOnlyCollection<Product> Products => _products;
     public virtual Seller CreatedBy { get; protected set; }
 
-    public int CreatedById { get; protected set; }
+    public Guid CreatedById { get; protected set; }
 
     protected Category() { }
 
@@ -17,6 +17,7 @@ public class Category : EntityBase
         AssertionConcern.AssertArgumentNotNullOrEmpty(name, nameof(name));
         AssertionConcern.AssertArgumentNotNull(createdBy, nameof(createdBy));
 
+        Id = Guid.NewGuid();
         Name = name;
         CreatedBy = createdBy;
     }

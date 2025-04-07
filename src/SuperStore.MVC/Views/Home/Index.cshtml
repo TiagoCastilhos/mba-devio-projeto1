@@ -4,7 +4,7 @@
 }
 @model IEnumerable<SuperStore.MVC.ViewModels.Products.ProductViewModel>;
 <h3>Vitrine</h3>
-<div class="d-flex flex-wrap justify-content-between align-items-start">
+<div class="d-flex flex-wrap justify-content-lg-evenly align-items-start">
     @if (Model?.Any() == true)
     {
         @foreach (var product in Model)

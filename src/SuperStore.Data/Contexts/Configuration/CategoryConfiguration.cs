@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SuperStore.Model.Entities;
 
 namespace SuperStore.Data.Contexts.Configuration;
@@ -15,7 +16,8 @@ internal sealed class CategoryConfiguration : ConfigurationBase<Category>
 
         builder.HasOne(c => c.CreatedBy)
             .WithMany(sp => sp.Categories)
-            .HasForeignKey(c => c.CreatedById);
+            .HasForeignKey(c => c.CreatedById)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(c => c.Name)
             .IsUnique(false);

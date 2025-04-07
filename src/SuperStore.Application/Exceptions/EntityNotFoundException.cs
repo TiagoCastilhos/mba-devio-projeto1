@@ -3,7 +3,7 @@
 namespace SuperStore.Application.Exceptions;
 public sealed class EntityNotFoundException : ServiceApplicationException
 {
-    public EntityNotFoundException(string entityName, int entityId)
+    public EntityNotFoundException(string entityName, Guid entityId)
         : base($"Entidade {entityName} com id {entityId} não foi encontrada", HttpStatusCode.NotFound)
     {
     }

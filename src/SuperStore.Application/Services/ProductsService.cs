@@ -38,7 +38,7 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         return [.. products.Select(product => new ProductOutputModel(product))];
     }
 
-    public async Task<ProductOutputModel?> GetAsync(int id, CancellationToken cancellationToken)
+    public async Task<ProductOutputModel?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         var userId = GetUserId()!;
 
@@ -99,7 +99,7 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         return new ProductOutputModel(product);
     }
 
-    public async Task DeleteAsync(int id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var product = await _productsRepository.GetAsync(id, cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Product), id);

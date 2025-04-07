@@ -1,10 +1,10 @@
 ﻿namespace SuperStore.Model.Entities;
 public abstract class EntityBase
 {
-    public int Id { get; protected set; }
+    public Guid Id { get; protected set; }
     public bool IsDeleted { get; protected set; }
-    public DateTimeOffset CreatedOn { get; protected set; }
-    public DateTimeOffset UpdatedOn { get; protected set; }
+    public DateTime CreatedOn { get; protected set; }
+    public DateTime UpdatedOn { get; protected set; }
 
     public override bool Equals(object obj)
     {

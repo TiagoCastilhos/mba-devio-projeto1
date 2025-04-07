@@ -41,7 +41,7 @@ public class ProductsController : ControllerBase
     [ActionName(nameof(GetAsync))]
     [ProducesResponseType(typeof(ProductOutputModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAsync([FromRoute] int id)
+    public async Task<IActionResult> GetAsync([FromRoute] Guid id)
     {
         var product = await _productsService.GetAsync(id, Request.HttpContext.RequestAborted);
 
@@ -62,7 +62,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(typeof(ProductOutputModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateProductInputModel inputModel)
+    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateProductInputModel inputModel)
     {
         if (id != inputModel.Id)
             return BadRequest("Id do produto da rota deve ser o mesmo do corpo da mensagem.");
@@ -74,7 +74,7 @@ public class ProductsController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+    public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
     {
         await _productsService.DeleteAsync(id, Request.HttpContext.RequestAborted);
         return NoContent();

@@ -86,8 +86,8 @@ public class Program
 
     private static async Task ProvideInfrastructureAsync(EnvironmentOptions environmentOptions, IServiceCollection services)
     {
-        if (!environmentOptions.IsDevelopment())
-            return;
+        //if (!environmentOptions.IsDevelopment())
+        //    return;
 
         await services.CreateDatabaseIfNotExistsAsync();
     }

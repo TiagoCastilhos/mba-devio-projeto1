@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SuperStore.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialmigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,10 +15,10 @@ namespace SuperStore.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "NVARCHAR(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,20 +29,20 @@ namespace SuperStore.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    UserName = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<int>(type: "INTEGER", nullable: false),
+                    PasswordHash = table.Column<string>(type: "NVARCHAR(1000)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "NVARCHAR(1000)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "NVARCHAR(1000)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "NVARCHAR(1000)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<int>(type: "INTEGER", nullable: false),
+                    TwoFactorEnabled = table.Column<int>(type: "INTEGER", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "NVARCHAR(1000)", nullable: true),
+                    LockoutEnabled = table.Column<int>(type: "INTEGER", nullable: false),
                     AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -54,13 +54,12 @@ namespace SuperStore.Data.Migrations
                 name: "Sellers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 25, DateTimeKind.Unspecified).AddTicks(1792), new TimeSpan(0, 0, 0, 0, 0))),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 25, DateTimeKind.Unspecified).AddTicks(2162), new TimeSpan(0, 0, 0, 0, 0)))
+                    Id = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 50, nullable: false),
+                    UserId = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 40, nullable: false),
+                    IsDeleted = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
+                    CreatedOn = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    UpdatedOn = table.Column<string>(type: "NVARCHAR(1000)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,9 +72,9 @@ namespace SuperStore.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    RoleId = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    ClaimType = table.Column<string>(type: "NVARCHAR(1000)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "NVARCHAR(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,9 +93,9 @@ namespace SuperStore.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    ClaimType = table.Column<string>(type: "NVARCHAR(1000)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "NVARCHAR(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -113,10 +112,10 @@ namespace SuperStore.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                    LoginProvider = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 128, nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "NVARCHAR(1000)", nullable: true),
+                    UserId = table.Column<string>(type: "NVARCHAR(1000)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,8 +132,8 @@ namespace SuperStore.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false)
+                    UserId = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    RoleId = table.Column<string>(type: "NVARCHAR(1000)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,10 +156,10 @@ namespace SuperStore.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 128, nullable: false),
+                    Value = table.Column<string>(type: "NVARCHAR(1000)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -177,13 +176,12 @@ namespace SuperStore.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
-                    CreatedById = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 24, DateTimeKind.Unspecified).AddTicks(1876), new TimeSpan(0, 0, 0, 0, 0))),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 24, DateTimeKind.Unspecified).AddTicks(2477), new TimeSpan(0, 0, 0, 0, 0)))
+                    Id = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 30, nullable: false),
+                    CreatedById = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    IsDeleted = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
+                    CreatedOn = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    UpdatedOn = table.Column<string>(type: "NVARCHAR(1000)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -193,25 +191,24 @@ namespace SuperStore.Data.Migrations
                         column: x => x.CreatedById,
                         principalTable: "Sellers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Id = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    Name = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 200, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    ImageUrl = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
-                    CreatedById = table.Column<int>(type: "INTEGER", nullable: false),
-                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 24, DateTimeKind.Unspecified).AddTicks(8028), new TimeSpan(0, 0, 0, 0, 0))),
-                    UpdatedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2025, 4, 3, 1, 16, 31, 24, DateTimeKind.Unspecified).AddTicks(8558), new TimeSpan(0, 0, 0, 0, 0)))
+                    ImageUrl = table.Column<string>(type: "NVARCHAR(1000)", maxLength: 200, nullable: true),
+                    CreatedById = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    CategoryId = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    IsDeleted = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
+                    CreatedOn = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
+                    UpdatedOn = table.Column<string>(type: "NVARCHAR(1000)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,13 +218,13 @@ namespace SuperStore.Data.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Products_Sellers_CreatedById",
                         column: x => x.CreatedById,
                         principalTable: "Sellers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

@@ -24,6 +24,6 @@ public sealed class UpdateProductInputModelValidator : AbstractValidator<UpdateP
             .NotEmpty();
 
         RuleFor(x => x.Id)
-            .GreaterThanOrEqualTo(1);
+            .NotEqual(Guid.Empty);
     }
 }

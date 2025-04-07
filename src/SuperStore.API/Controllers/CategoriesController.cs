@@ -29,7 +29,7 @@ public class CategoriesController : ControllerBase
     [HttpGet("{id}")]
     [ActionName(nameof(GetAsync))]
     [ProducesResponseType(typeof(CategoryOutputModel), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAsync([FromRoute] int id)
+    public async Task<IActionResult> GetAsync([FromRoute] Guid id)
     {
         var categories = await _categoriesService.GetAsync(id, Request.HttpContext.RequestAborted);
         return Ok(categories);
@@ -48,7 +48,7 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(typeof(CategoryOutputModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateCategoryInputModel inputModel)
+    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateCategoryInputModel inputModel)
     {
         if (id != inputModel.Id)
             return BadRequest("Id da categoria da rota deve ser o mesmo do corpo da mensagem.");
@@ -60,7 +60,7 @@ public class CategoriesController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(Guid id)
     {
         await _categoriesService.DeleteAsync(id, Request.HttpContext.RequestAborted);
         return NoContent();

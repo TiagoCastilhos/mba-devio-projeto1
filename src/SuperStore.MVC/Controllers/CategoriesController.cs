@@ -65,7 +65,7 @@ public class CategoriesController : Controller
     }
 
     [HttpGet("Edit")]
-    public async Task<IActionResult> Edit(int id)
+    public async Task<IActionResult> Edit(Guid id)
     {
         var category = await _categoriesService.GetAsync(id, Request.HttpContext.RequestAborted);
 
@@ -101,7 +101,7 @@ public class CategoriesController : Controller
     }
 
     [HttpGet("Delete")]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(Guid id)
     {
         await _categoriesService.DeleteAsync(id, Request.HttpContext.RequestAborted);
         return RedirectToAction("Index", "Categories");

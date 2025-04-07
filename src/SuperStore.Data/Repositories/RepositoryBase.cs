@@ -20,7 +20,7 @@ internal abstract class RepositoryBase<T> where T : EntityBase
         return await DbSet.ToListAsync(cancellationToken);
     }
 
-    public async Task<T?> GetAsync(int id, CancellationToken cancellationToken)
+    public async Task<T?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         return await DbSet.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }

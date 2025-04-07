@@ -87,7 +87,7 @@ public class ProductsController : Controller
 
     [Authorize]
     [HttpGet("Edit")]
-    public async Task<IActionResult> EditAsync(int id)
+    public async Task<IActionResult> EditAsync(Guid id)
     {
         var product = await _productsService.GetAsync(id, Request.HttpContext.RequestAborted);
 
@@ -129,7 +129,7 @@ public class ProductsController : Controller
     }
 
     [HttpGet("Delete")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         await _productsService.DeleteAsync(id, CancellationToken.None);
         return RedirectToAction("Index", "Products");

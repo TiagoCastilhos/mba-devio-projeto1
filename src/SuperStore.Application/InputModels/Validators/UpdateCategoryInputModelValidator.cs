@@ -19,6 +19,6 @@ public sealed class UpdateCategoryInputModelValidator : AbstractValidator<Update
             .WithMessage("Já existe uma categoria com este nome"); ;
 
         RuleFor(x => x.Id)
-            .GreaterThanOrEqualTo(1);
+            .NotEqual(Guid.Empty);
     }
 }

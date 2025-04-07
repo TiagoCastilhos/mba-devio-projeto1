@@ -28,14 +28,10 @@ internal sealed class CategoriesService : ServiceBase, ICategoriesService
         return [.. categories.Select(category => new CategoryOutputModel(category))];
     }
 
-    public async Task<CategoryOutputModel?> GetAsync(int id, CancellationToken cancellationToken)
+    public async Task<CategoryOutputModel?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        var userId = GetUserId();
-
-        var category = await _categoriesRepository.GetAsync(id, cancellationToken);
-
-        if (category == null || category.CreatedBy.UserId != userId)
-            throw new EntityNotFoundException(nameof(Category), id);
+        var category = await _categoriesRepository.GetAsync(id, cancellationToken) 
+            ?? throw new EntityNotFoundException(nameof(Category), id);
 
         return new CategoryOutputModel(category);
     }
@@ -58,11 +54,6 @@ internal sealed class CategoriesService : ServiceBase, ICategoriesService
         var category = await _categoriesRepository.GetAsync(inputModel.Id, cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Category), inputModel.Id);
 
-        var userId = GetUserId();
-
-        if (category.CreatedBy.UserId != userId)
-            throw new EntityNotFoundException(nameof(Category), inputModel.Id);
-
         category.ChangeName(inputModel.Name);
 
         await _categoriesRepository.SaveChangesAsync(cancellationToken);
@@ -70,15 +61,14 @@ internal sealed class CategoriesService : ServiceBase, ICategoriesService
         return new CategoryOutputModel(category);
     }
 
-    public async Task DeleteAsync(int id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var userId = GetUserId();
 
         var category = await _categoriesRepository.GetAsync(id, cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Category), id);
 
-        if (category.CreatedBy.UserId != userId)
-            throw new EntityNotFoundException(nameof(Category), id);
+        //check if there's any product in this category
 
         _categoriesRepository.Delete(category);
         await _categoriesRepository.SaveChangesAsync(cancellationToken);
