@@ -1,8 +1,8 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SuperStore.Application.Abstractions.Services;
-using SuperStore.Application.InputModels;
+using SuperStore.Core.Abstractions.Services;
+using SuperStore.Core.InputModels;
 using SuperStore.MVC.ViewModels.Products;
 
 namespace SuperStore.MVC.Controllers;

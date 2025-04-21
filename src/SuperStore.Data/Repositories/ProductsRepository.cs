@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SuperStore.Data.Abstractions.Contexts;
 using SuperStore.Data.Abstractions.Repositories;
-using SuperStore.Model.Entities;
+using SuperStore.Data.Entities;
 
 namespace SuperStore.Data.Repositories;
 internal sealed class ProductsRepository : RepositoryBase<Product>, IProductsRepository

@@ -1,8 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using SuperStore.Application.Exceptions;
-using SuperStore.Authorization.Exceptions;
+using SuperStore.Core.Exceptions;
 
 namespace SuperStore.API.Middlewares;
 internal sealed class ServiceExceptionMiddleware

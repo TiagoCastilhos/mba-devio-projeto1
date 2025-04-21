@@ -18,17 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SuperStore.CrossCutting\SuperStore.CrossCutting.csproj" />
-    <ProjectReference Include="..\SuperStore.Model\SuperStore.Model.csproj" />
-  </ItemGroup>
-	
-  <ItemGroup>
-  	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-  		<_Parameter1>SuperStore.Authorization</_Parameter1>
-  	</AssemblyAttribute>
-  </ItemGroup>
-	
-  <ItemGroup>
     <Folder Include="Migrations\" />
   </ItemGroup>
 </Project>

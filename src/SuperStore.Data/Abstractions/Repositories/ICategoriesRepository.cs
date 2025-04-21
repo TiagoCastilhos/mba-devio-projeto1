@@ -1,4 +1,4 @@
-﻿using SuperStore.Model.Entities;
+﻿using SuperStore.Data.Entities;
 
 namespace SuperStore.Data.Abstractions.Repositories;
 

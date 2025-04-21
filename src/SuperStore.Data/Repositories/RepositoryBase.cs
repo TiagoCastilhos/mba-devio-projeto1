@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SuperStore.Data.Abstractions.Contexts;
-using SuperStore.Model.Entities;
+using SuperStore.Data.Entities;
 
 namespace SuperStore.Data.Repositories;
 

@@ -220,7 +220,7 @@ namespace SuperStore.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SuperStore.Model.Entities.Category", b =>
+            modelBuilder.Entity("SuperStore.Data.Entities.Category", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -259,7 +259,7 @@ namespace SuperStore.Data.Migrations
                     b.ToTable("Categories", (string)null);
                 });
 
-            modelBuilder.Entity("SuperStore.Model.Entities.Product", b =>
+            modelBuilder.Entity("SuperStore.Data.Entities.Product", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -317,7 +317,7 @@ namespace SuperStore.Data.Migrations
                     b.ToTable("Products", (string)null);
                 });
 
-            modelBuilder.Entity("SuperStore.Model.Entities.Seller", b =>
+            modelBuilder.Entity("SuperStore.Data.Entities.Seller", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -407,9 +407,9 @@ namespace SuperStore.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SuperStore.Model.Entities.Category", b =>
+            modelBuilder.Entity("SuperStore.Data.Entities.Category", b =>
                 {
-                    b.HasOne("SuperStore.Model.Entities.Seller", "CreatedBy")
+                    b.HasOne("SuperStore.Data.Entities.Seller", "CreatedBy")
                         .WithMany("Categories")
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -418,15 +418,15 @@ namespace SuperStore.Data.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("SuperStore.Model.Entities.Product", b =>
+            modelBuilder.Entity("SuperStore.Data.Entities.Product", b =>
                 {
-                    b.HasOne("SuperStore.Model.Entities.Category", "Category")
+                    b.HasOne("SuperStore.Data.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SuperStore.Model.Entities.Seller", "CreatedBy")
+                    b.HasOne("SuperStore.Data.Entities.Seller", "CreatedBy")
                         .WithMany("Products")
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -437,12 +437,12 @@ namespace SuperStore.Data.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("SuperStore.Model.Entities.Category", b =>
+            modelBuilder.Entity("SuperStore.Data.Entities.Category", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("SuperStore.Model.Entities.Seller", b =>
+            modelBuilder.Entity("SuperStore.Data.Entities.Seller", b =>
                 {
                     b.Navigation("Categories");
 

@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SuperStore.CrossCutting.Options;
 using SuperStore.Data.Abstractions.Contexts;
 using SuperStore.Data.Abstractions.Repositories;
 using SuperStore.Data.Contexts;
+using SuperStore.Data.Options;
 using SuperStore.Data.Repositories;
 
 namespace SuperStore.Data.Extensions;
@@ -28,14 +28,5 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISellersRepository, SellersRepository>();
 
         return services;
-    }
-
-    public static async Task CreateDatabaseIfNotExistsAsync(this IServiceCollection services)
-    {
-        using var serviceProvider = services.BuildServiceProvider();
-
-        var context = serviceProvider.GetRequiredService<ISuperStoreDbContext>();
-
-        await context.Database.MigrateAsync();
     }
 }

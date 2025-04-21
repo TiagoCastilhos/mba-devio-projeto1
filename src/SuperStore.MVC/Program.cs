@@ -1,7 +1,7 @@
-using SuperStore.Application.Extensions;
-using SuperStore.Authorization.Extensions;
-using SuperStore.CrossCutting.Options;
+using SuperStore.Core.Extensions;
+using SuperStore.Core.Seeds;
 using SuperStore.Data.Extensions;
+using SuperStore.Data.Options;
 
 namespace SuperStore.MVC;
 public class Program
@@ -40,15 +40,7 @@ public class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
-        await ProvideInfrastructureAsync(environmentOptions, builder.Services);
+        await DbSeeder.SeedAsync(app);
         await app.RunAsync();
-    }
-
-    private static async Task ProvideInfrastructureAsync(EnvironmentOptions environmentOptions, IServiceCollection services)
-    {
-        //if (!environmentOptions.IsDevelopment())
-        //    return;
-
-        await services.CreateDatabaseIfNotExistsAsync();
     }
 }

@@ -79,7 +79,7 @@
             <option value="" selected>Selecionar categoria</option>
             @if (ViewData["Categories"] != null)
             {
-                @foreach (var category in ViewData["Categories"] as IEnumerable<SuperStore.Application.OutputModels.CategoryOutputModel>)
+                @foreach (var category in ViewData["Categories"] as IEnumerable<SuperStore.Core.OutputModels.CategoryOutputModel>)
                 {
                     <option value="@category.Name">@category.Name</option>
                 }

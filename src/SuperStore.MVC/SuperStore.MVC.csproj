@@ -14,10 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SuperStore.Application\SuperStore.Application.csproj" />
-    <ProjectReference Include="..\SuperStore.Authorization\SuperStore.Authorization.csproj" />
+    <ProjectReference Include="..\SuperStore.Core\SuperStore.Core.csproj" />
     <ProjectReference Include="..\SuperStore.Data\SuperStore.Data.csproj" />
-    <ProjectReference Include="..\SuperStore.Model\SuperStore.Model.csproj" />
   </ItemGroup>
 
 </Project>

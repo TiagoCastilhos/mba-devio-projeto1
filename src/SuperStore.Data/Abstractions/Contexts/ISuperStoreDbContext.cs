@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using SuperStore.Model.Entities;
+using SuperStore.Data.Entities;
 
 namespace SuperStore.Data.Abstractions.Contexts;
 public interface ISuperStoreDbContext
@@ -9,7 +9,7 @@ public interface ISuperStoreDbContext
     DbSet<Product> Products { get; }
     DbSet<Seller> Sellers { get; }
 
-    internal DatabaseFacade Database { get; }
+    DatabaseFacade Database { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

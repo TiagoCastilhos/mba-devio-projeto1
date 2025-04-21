@@ -79,7 +79,7 @@
 
         <select class="form-select" aria-label="Default select example" asp-for="@Model.Category">
             <option value="" selected>Selecionar categoria</option>
-            @foreach (var category in ViewData["Categories"] as IEnumerable<SuperStore.Application.OutputModels.CategoryOutputModel>)
+            @foreach (var category in ViewData["Categories"] as IEnumerable<SuperStore.Core.OutputModels.CategoryOutputModel>)
             {
                 <option value="@category.Name">@category.Name</option>
             }

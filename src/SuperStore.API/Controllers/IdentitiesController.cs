@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SuperStore.Authorization.Abstractions.Services;
-using SuperStore.Authorization.Exceptions;
-using SuperStore.Authorization.InputModels;
-using SuperStore.Authorization.OutputModels;
+using SuperStore.Core.Abstractions.Services;
+using SuperStore.Core.Exceptions;
+using SuperStore.Core.InputModels;
+using SuperStore.Core.OutputModels;
 
 namespace SuperStore.API.Controllers;
 

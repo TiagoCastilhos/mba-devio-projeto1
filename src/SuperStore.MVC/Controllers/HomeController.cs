@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SuperStore.Application.Abstractions.Services;
+using SuperStore.Core.Abstractions.Services;
 using SuperStore.MVC.Models;
 using SuperStore.MVC.ViewModels.Products;
 

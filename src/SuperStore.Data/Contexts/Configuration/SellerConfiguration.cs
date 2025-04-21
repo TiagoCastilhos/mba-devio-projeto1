@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SuperStore.Model.Entities;
+using SuperStore.Data.Entities;
 
 namespace SuperStore.Data.Contexts.Configuration;
 

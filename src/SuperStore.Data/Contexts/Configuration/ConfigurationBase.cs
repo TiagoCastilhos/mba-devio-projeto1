@@ -2,8 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
-using SuperStore.Model;
-using SuperStore.Model.Entities;
+using SuperStore.Data.Entities;
 
 namespace SuperStore.Data.Contexts.Configuration;
 
@@ -42,8 +41,6 @@ internal class DateTimeValueGenerator : ValueGenerator<DateTime>
 
     public override DateTime Next(EntityEntry entry)
     {
-        AssertionConcern.AssertArgumentNotNull(entry, nameof(entry));
-
         return DateTime.UtcNow;
     }
 }

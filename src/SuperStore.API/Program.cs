@@ -2,10 +2,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using SuperStore.API.Middlewares;
-using SuperStore.Application.Extensions;
-using SuperStore.Authorization.Extensions;
-using SuperStore.CrossCutting.Options;
+using SuperStore.Core.Extensions;
+using SuperStore.Core.Seeds;
 using SuperStore.Data.Extensions;
+using SuperStore.Data.Options;
 
 namespace SuperStore.API;
 public class Program
@@ -80,15 +80,7 @@ public class Program
 
         app.UseMiddleware<ServiceExceptionMiddleware>();
 
-        await ProvideInfrastructureAsync(environmentOptions, builder.Services);
+        await DbSeeder.SeedAsync(app);
         await app.RunAsync();
-    }
-
-    private static async Task ProvideInfrastructureAsync(EnvironmentOptions environmentOptions, IServiceCollection services)
-    {
-        //if (!environmentOptions.IsDevelopment())
-        //    return;
-
-        await services.CreateDatabaseIfNotExistsAsync();
     }
 }

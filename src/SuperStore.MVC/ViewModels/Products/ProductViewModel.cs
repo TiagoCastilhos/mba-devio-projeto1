@@ -1,4 +1,4 @@
-﻿using SuperStore.Application.OutputModels;
+﻿using SuperStore.Core.OutputModels;
 
 namespace SuperStore.MVC.ViewModels.Products;
 

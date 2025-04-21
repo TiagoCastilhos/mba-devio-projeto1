@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuperStore.Data.Abstractions.Contexts;
-using SuperStore.Model.Entities;
+using SuperStore.Data.Entities;
 
 namespace SuperStore.Data.Contexts;
-internal sealed class SuperStoreDbContext : IdentityDbContext, ISuperStoreDbContext
+public sealed class SuperStoreDbContext : IdentityDbContext, ISuperStoreDbContext
 {
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
