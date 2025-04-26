@@ -8,6 +8,14 @@ public abstract class ViewModelBase
         _errors = errors.ToDictionary(e => e.Key, e => e.Value.ToList());
     }
 
+    public void SetErrors(IReadOnlyDictionary<string, List<string>>? errors)
+    {
+        if (errors == null)
+            return;
+
+        _errors = errors.ToDictionary(e => e.Key, e => e.Value);
+    }
+
     public void AddError(string fieldName, string error)
     {
         if (!_errors.ContainsKey(fieldName))

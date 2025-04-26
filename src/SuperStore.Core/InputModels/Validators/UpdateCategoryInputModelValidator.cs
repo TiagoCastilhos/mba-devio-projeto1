@@ -9,6 +9,7 @@ public sealed class UpdateCategoryInputModelValidator : AbstractValidator<Update
     {
         RuleFor(x => x.Name)
             .NotEmpty()
+            .WithMessage("Nome da categoria é obrigatório")
             .MaximumLength(30)
             .MustAsync(async (inputModel, name, ct) =>
             {
@@ -19,6 +20,7 @@ public sealed class UpdateCategoryInputModelValidator : AbstractValidator<Update
             .WithMessage("Já existe uma categoria com este nome"); ;
 
         RuleFor(x => x.Id)
-            .NotEqual(Guid.Empty);
+            .NotEqual(Guid.Empty)
+            .WithMessage("Id da categoria é obrigatório");
     }
 }

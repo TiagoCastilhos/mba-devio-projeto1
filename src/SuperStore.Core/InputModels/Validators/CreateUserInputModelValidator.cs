@@ -12,17 +12,22 @@ public sealed class CreateUserInputModelValidator : AbstractValidator<CreateUser
     {
         RuleFor(x => x.Email)
             .NotEmpty()
-            .EmailAddress();
+            .WithMessage("Email é obrigatório")
+            .EmailAddress()
+            .WithMessage("Email inválido");
 
         RuleFor(x => x.Name)
             .NotEmpty()
+            .WithMessage("Nome do usuário é obrigatório")
             .MaximumLength(50)
+            .WithMessage("Nome do usuário deve ter no máximo 50 caracteres")
             .Must(UserNameRegex.IsMatch)
             .WithMessage("Nome do usuário pode conter apenas letras, números e os seguintes caracteres especiais: -._@+");
 
         RuleFor(x => x.Password)
             .NotEmpty()
+            .WithMessage("Senha é obrigatória")
             .Must(PasswordRegex.IsMatch)
-            .WithMessage("Senha precisa conter no mínimo 6 caracteres, 1 número, 1 letra maiúscula, 1 letra minúscula e 1 caracter especial");
+            .WithMessage("Senha precisa conter no mínimo 6 caracteres, contendo pelo menos: 1 número, 1 letra maiúscula, 1 letra minúscula e 1 caracter especial");
     }
 }

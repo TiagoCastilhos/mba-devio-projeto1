@@ -51,18 +51,7 @@ public class IdentitiesController : Controller
         if (signInOutputModel.Succeeded)
             return RedirectToAction("Index", "Home");
 
-        //TODO: Service could return the errors instead of the bools
-        if (signInOutputModel.IsLockedOut)
-            signInViewModel.AddError("Email", "Usuário está bloqueado. Tente novamente mais tarde.");
-
-        if (!signInOutputModel.UserExists)
-            signInViewModel.AddError("Email", "Usuário não existe.");
-
-        if (signInOutputModel.IsNotAllowed)
-            signInViewModel.AddError("Email", "Usuário não tem permissão.");
-
-        if (signInOutputModel.PasswordIsIncorrect)
-            signInViewModel.AddError("Password", "Senha incorreta.");
+        signInViewModel.SetErrors(signInOutputModel.Errors);
 
         return View(signInViewModel);
     }
@@ -92,7 +81,7 @@ public class IdentitiesController : Controller
         }
         catch (UserCreationException ex)
         {
-            AddUserCreationErrors(signInViewModel, ex);
+            signInViewModel.SetErrors(ex.Errors);
 
             return View(signInViewModel);
         }
@@ -115,17 +104,5 @@ public class IdentitiesController : Controller
     public IActionResult AccessDenied()
     {
         return View();
-    }
-
-    private static void AddUserCreationErrors(SignUpViewModel signInViewModel, UserCreationException ex)
-    {
-        foreach (var error in ex.Errors)
-        {
-            if (error.StartsWith("Email"))
-                signInViewModel.AddError("Email", error);
-
-            if (error.StartsWith("Username"))
-                signInViewModel.AddError("Name", error);
-        }
     }
 }

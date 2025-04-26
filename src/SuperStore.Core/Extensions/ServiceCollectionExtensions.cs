@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using SuperStore.Core.Abstractions.Services;
+using SuperStore.Core.Describers;
 using SuperStore.Core.InputModels.Validators;
 using SuperStore.Core.Services;
 using SuperStore.Data.Contexts;
@@ -29,9 +30,8 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddDefaultIdentity<IdentityUser>()
-            .AddEntityFrameworkStores<SuperStoreDbContext>();
-        //TODO Localize error messages
-        //https://learn.microsoft.com/en-us/answers/questions/549950/localize-aspnetcore-identity-error-messages
+            .AddEntityFrameworkStores<SuperStoreDbContext>()
+            .AddErrorDescriber<PortugueseIdentityErrorDescriber>();
 
         services.Configure<Microsoft.AspNetCore.Identity.IdentityOptions>(ConfigureIdentityOptions);
 

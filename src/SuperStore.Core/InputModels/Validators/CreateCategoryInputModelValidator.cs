@@ -9,7 +9,9 @@ public sealed class CreateCategoryInputModelValidator : AbstractValidator<Create
     {
         RuleFor(x => x.Name)
             .NotEmpty()
+            .WithMessage("O nome da categoria é obrigatório")
             .MaximumLength(30)
+            .WithMessage("O nome da categoria deve ter no máximo 30 caracteres")
             .MustAsync(async (name, ct) =>
             {
                 var existingCategory = await categoriesRepository.GetByNameAsync(name, ct);

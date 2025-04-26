@@ -20,23 +20,11 @@ internal sealed class SignInService : ISignInService
         var user = await _userManager.FindByEmailAsync(inputModel.Email);
 
         if (user == null)
-        {
-            return new SignInOutputModel
-            {
-                Succeeded = false,
-                UserExists = false
-            };
-        }
+            return new SignInOutputModel(false, false);
 
         var result = await _signInManager.PasswordSignInAsync(user, inputModel.Password, inputModel.IsPersistent, false);
 
-        return new SignInOutputModel
-        {
-            IsLockedOut = result.IsLockedOut,
-            IsNotAllowed = result.IsNotAllowed,
-            Succeeded = result.Succeeded,
-            UserExists = true
-        };
+        return new SignInOutputModel(result.Succeeded, true, result.IsLockedOut, result.IsNotAllowed);
     }
 
     public async Task SignOutAsync()

@@ -141,7 +141,6 @@ public class ProductsController : Controller
         ViewData["Categories"] = categories;
     }
 
-    //TODO: move to a specific service
     private async Task<string> UploadImageAsync(IFormFile image)
     {
         var imageUrl = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
