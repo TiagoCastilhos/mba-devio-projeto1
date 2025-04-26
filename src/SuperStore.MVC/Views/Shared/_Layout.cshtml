@@ -33,16 +33,19 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Gerenciar produtos</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" style="margin-left: auto">
+                                <a class="nav-link text-dark">Olá, @User?.Identity?.Name!</a>
+                            </li>
+                            <li class="nav-item" style="margin-right: 0">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Identities" asp-action="SignOut">Sair</a>
                             </li>
                         }
                         else
                         {
-                            <li class="nav-item">
+                            <li class="nav-item" style="margin-left: auto">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Identities" asp-action="SignUp">Registrar</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" style="margin-right: 0">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Identities" asp-action="SignIn">Entrar</a>
                             </li>
                         }
