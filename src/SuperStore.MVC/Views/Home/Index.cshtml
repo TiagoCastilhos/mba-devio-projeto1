@@ -11,9 +11,9 @@
         {
             <div class="card" style="width: 16rem; margin: 0.3em 2em">
                 <img src="@(!string.IsNullOrEmpty(product.ImageUrl) ? $"/images/{product.ImageUrl}" : "/images/placeholder.jpg")" class="card-img-top" style="height: 18em;" alt="product image">
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">@product.Description</p>
+                <div class="card-body border-top">
+                    <h5 class="card-title text-nowrap text-no-overflow">@product.Name</h5>
+                    <p class="card-text text-nowrap text-no-overflow">@product.Description</p>
                     <p class="card-text">R$ @product.Price</p>
                 </div>
             </div>
