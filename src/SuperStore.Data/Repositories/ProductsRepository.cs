@@ -11,8 +11,13 @@ internal sealed class ProductsRepository : RepositoryBase<Product>, IProductsRep
     {
     }
 
-    public async Task<IReadOnlyCollection<Product>> GetAsync(string userId, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<Product>> GetAsync(string userId, string? categoryName = null, CancellationToken cancellationToken = default)
     {
-        return await DbSet.Where(c => c.CreatedBy.UserId == userId).ToListAsync(cancellationToken);
+        var query = DbSet.Where(c => c.CreatedBy.UserId == userId);
+
+        if (!string.IsNullOrWhiteSpace(categoryName))
+            query = query.Where(c => EF.Functions.Like(c.Category.Name, categoryName));
+
+        return await query.ToListAsync(cancellationToken);
     }
 }

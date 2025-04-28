@@ -30,9 +30,9 @@ public class ProductsController : ControllerBase
 
     [HttpGet("")]
     [ProducesResponseType(typeof(IEnumerable<ProductOutputModel>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetAllAsync([FromQuery] string category)
     {
-        var products = await _productsService.GetAsync(Request.HttpContext.RequestAborted);
+        var products = await _productsService.GetAsync(category, Request.HttpContext.RequestAborted);
 
         return Ok(products);
     }
@@ -60,7 +60,7 @@ public class ProductsController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(ProductOutputModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateProductInputModel inputModel)
     {
@@ -72,7 +72,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
     {

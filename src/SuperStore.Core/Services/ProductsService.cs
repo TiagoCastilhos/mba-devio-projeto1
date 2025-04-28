@@ -31,10 +31,10 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         return [.. products.Select(product => new ProductOutputModel(product))];
     }
 
-    public async Task<IReadOnlyCollection<ProductOutputModel>> GetAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ProductOutputModel>> GetAsync(string? categoryName, CancellationToken cancellationToken)
     {
         var userId = GetUserId()!;
-        var products = await _productsRepository.GetAsync(userId, cancellationToken);
+        var products = await _productsRepository.GetAsync(userId, categoryName, cancellationToken);
         return [.. products.Select(product => new ProductOutputModel(product))];
     }
 

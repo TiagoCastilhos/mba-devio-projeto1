@@ -44,7 +44,7 @@ public class ProductsController : Controller
     [HttpGet("Index")]
     public async Task<IActionResult> IndexAsync()
     {
-        var products = await _productsService.GetAsync(Request.HttpContext.RequestAborted);
+        var products = await _productsService.GetAsync(null, Request.HttpContext.RequestAborted);
 
         return View(products.Select(p => new ProductViewModel(p)));
     }
