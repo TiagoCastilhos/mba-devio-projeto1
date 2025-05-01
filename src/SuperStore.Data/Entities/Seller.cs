@@ -13,5 +13,7 @@ public class Seller : EntityBase
         Id = Guid.Parse(userId);
         Name = name;
         UserId = userId;
+        CreatedOn = DateTime.UtcNow;
+        UpdatedOn = DateTime.UtcNow;
     }
 }

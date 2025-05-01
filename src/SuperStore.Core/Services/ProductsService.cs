@@ -90,6 +90,7 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         product.Description = inputModel.Description;
         product.Price = inputModel.Price;
         product.Quantity = inputModel.Quantity;
+        product.UpdatedOn = DateTime.UtcNow;
 
         if (!string.IsNullOrEmpty(inputModel.ImageUrl))
             product.ImageUrl = inputModel.ImageUrl;
@@ -108,6 +109,8 @@ internal sealed class ProductsService : ServiceBase, IProductsService
 
         if (product.CreatedBy.UserId != userId)
             throw new EntityNotFoundException(nameof(Product), id);
+
+        product.UpdatedOn = DateTime.UtcNow;
 
         _productsRepository.Delete(product);
         await _productsRepository.SaveChangesAsync(cancellationToken);

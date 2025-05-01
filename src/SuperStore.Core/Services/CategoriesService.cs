@@ -55,6 +55,7 @@ internal sealed class CategoriesService : ServiceBase, ICategoriesService
             ?? throw new EntityNotFoundException(nameof(Category), inputModel.Id);
 
         category.Name = inputModel.Name;
+        category.UpdatedOn = DateTime.UtcNow;
 
         await _categoriesRepository.SaveChangesAsync(cancellationToken);
 
@@ -68,7 +69,10 @@ internal sealed class CategoriesService : ServiceBase, ICategoriesService
         var category = await _categoriesRepository.GetAsync(id, cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Category), id);
 
-        //TODO: check if there's any product in this category
+        if (category.Products.Count > 0)
+            throw new EntityHasRelatedEntitiesException(nameof(Category), id);
+
+        category.UpdatedOn = DateTime.UtcNow;
 
         _categoriesRepository.Delete(category);
         await _categoriesRepository.SaveChangesAsync(cancellationToken);

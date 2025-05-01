@@ -15,5 +15,7 @@ public class Category : EntityBase
         Id = Guid.NewGuid();
         Name = name;
         CreatedBy = createdBy;
+        CreatedOn = DateTime.UtcNow;
+        UpdatedOn = DateTime.UtcNow;
     }
 }

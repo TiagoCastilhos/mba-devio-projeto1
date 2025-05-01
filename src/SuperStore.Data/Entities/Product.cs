@@ -24,5 +24,7 @@ public class Product : EntityBase
         Price = price;
         Quantity = quantity;
         ImageUrl = imageUrl;
+        CreatedOn = DateTime.UtcNow;
+        UpdatedOn = DateTime.UtcNow;
     }
 }
