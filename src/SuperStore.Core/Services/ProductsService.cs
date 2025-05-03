@@ -45,7 +45,7 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         var product = await _productsRepository.GetAsync(id, cancellationToken);
 
         if (product == null || product.CreatedBy.UserId != userId)
-            throw new EntityNotFoundException(nameof(Product), id);
+            throw new EntityNotFoundException("Produto", id);
 
         return new ProductOutputModel(product);
     }
@@ -57,7 +57,7 @@ internal sealed class ProductsService : ServiceBase, IProductsService
         var seller = await _sellersRepository.GetAsync(userId, cancellationToken);
 
         var category = await _categoriesRepository.GetByNameAsync(inputModel.Category, cancellationToken)
-            ?? throw new EntityNotFoundException(nameof(Category), inputModel.Category);
+            ?? throw new EntityNotFoundException("Categoria", inputModel.Category);
 
         var product = new Product(inputModel.Name, inputModel.Description, inputModel.Price,
             inputModel.Quantity, inputModel.ImageUrl, seller, category);
@@ -71,17 +71,17 @@ internal sealed class ProductsService : ServiceBase, IProductsService
     public async Task<ProductOutputModel> UpdateAsync(UpdateProductInputModel inputModel, CancellationToken cancellationToken)
     {
         var product = await _productsRepository.GetAsync(inputModel.Id, cancellationToken)
-            ?? throw new EntityNotFoundException(nameof(Product), inputModel.Id);
+            ?? throw new EntityNotFoundException("Produto", inputModel.Id);
 
         var userId = GetUserId()!;
 
         if (product.CreatedBy.UserId != userId)
-            throw new EntityNotFoundException(nameof(Product), inputModel.Id);
+            throw new EntityNotFoundException("Produto", inputModel.Id);
 
         if (product.Category.Name != inputModel.Category)
         {
             var category = await _categoriesRepository.GetByNameAsync(inputModel.Category, cancellationToken)
-                ?? throw new EntityNotFoundException(nameof(Category), inputModel.Category);
+                ?? throw new EntityNotFoundException("Categoria", inputModel.Category);
 
             product.Category = category;
         }
@@ -103,12 +103,12 @@ internal sealed class ProductsService : ServiceBase, IProductsService
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var product = await _productsRepository.GetAsync(id, cancellationToken)
-            ?? throw new EntityNotFoundException(nameof(Product), id);
+            ?? throw new EntityNotFoundException("Produto", id);
 
         var userId = GetUserId()!;
 
         if (product.CreatedBy.UserId != userId)
-            throw new EntityNotFoundException(nameof(Product), id);
+            throw new EntityNotFoundException("Produto", id);
 
         product.UpdatedOn = DateTime.UtcNow;
 

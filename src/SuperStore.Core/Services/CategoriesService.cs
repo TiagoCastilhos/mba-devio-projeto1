@@ -31,7 +31,7 @@ internal sealed class CategoriesService : ServiceBase, ICategoriesService
     public async Task<CategoryOutputModel?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         var category = await _categoriesRepository.GetAsync(id, cancellationToken)
-            ?? throw new EntityNotFoundException(nameof(Category), id);
+            ?? throw new EntityNotFoundException("Categoria", id);
 
         return new CategoryOutputModel(category);
     }
@@ -52,7 +52,7 @@ internal sealed class CategoriesService : ServiceBase, ICategoriesService
     public async Task<CategoryOutputModel> UpdateAsync(UpdateCategoryInputModel inputModel, CancellationToken cancellationToken)
     {
         var category = await _categoriesRepository.GetAsync(inputModel.Id, cancellationToken)
-            ?? throw new EntityNotFoundException(nameof(Category), inputModel.Id);
+            ?? throw new EntityNotFoundException("Categoria", inputModel.Id);
 
         category.Name = inputModel.Name;
         category.UpdatedOn = DateTime.UtcNow;
@@ -67,10 +67,10 @@ internal sealed class CategoriesService : ServiceBase, ICategoriesService
         var userId = GetUserId();
 
         var category = await _categoriesRepository.GetAsync(id, cancellationToken)
-            ?? throw new EntityNotFoundException(nameof(Category), id);
+            ?? throw new EntityNotFoundException("Categoria", id);
 
         if (category.Products.Count > 0)
-            throw new EntityHasRelatedEntitiesException(nameof(Category), id);
+            throw new EntityHasRelatedEntitiesException("Categoria", category.Name);
 
         category.UpdatedOn = DateTime.UtcNow;
 

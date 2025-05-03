@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SuperStore.Core.Abstractions.Services;
+using SuperStore.Core.Exceptions;
 using SuperStore.Core.InputModels;
 using SuperStore.MVC.ViewModels.Categories;
 
@@ -60,12 +61,21 @@ public class CategoriesController : Controller
             return View(viewModel);
         }
 
-        await _categoriesService.CreateAsync(inputModel, Request.HttpContext.RequestAborted);
+        try
+        {
+            await _categoriesService.CreateAsync(inputModel, Request.HttpContext.RequestAborted);
+            TempData.Add("SuccessMessage", $"Categoria '{viewModel.Name}' criada com sucesso!");
+        }
+        catch (ServiceApplicationException ex)
+        {
+            TempData.Add("ErrorMessage", ex.Message);
+        }
+
         return RedirectToAction("Index", "Categories");
     }
 
     [HttpGet("Edit")]
-    public async Task<IActionResult> Edit(Guid id)
+    public async Task<IActionResult> EditAsync(Guid id)
     {
         var category = await _categoriesService.GetAsync(id, Request.HttpContext.RequestAborted);
 
@@ -96,14 +106,32 @@ public class CategoriesController : Controller
             return View(viewModel);
         }
 
-        await _categoriesService.UpdateAsync(inputModel, Request.HttpContext.RequestAborted);
+        try
+        {
+            await _categoriesService.UpdateAsync(inputModel, Request.HttpContext.RequestAborted);
+            TempData.Add("SuccessMessage", $"Categoria '{viewModel.Name}' editada com sucesso!");
+        }
+        catch (ServiceApplicationException ex)
+        {
+            TempData.Add("ErrorMessage", ex.Message);
+        }
+
         return RedirectToAction("Index", "Categories");
     }
 
     [HttpGet("Delete")]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        await _categoriesService.DeleteAsync(id, Request.HttpContext.RequestAborted);
+        try
+        {
+            await _categoriesService.DeleteAsync(id, Request.HttpContext.RequestAborted);
+            TempData.Add("SuccessMessage", "Categoria deletada com sucesso!");
+        }
+        catch (ServiceApplicationException ex)
+        {
+            TempData.Add("ErrorMessage", ex.Message);
+        }
+
         return RedirectToAction("Index", "Categories");
     }
 }

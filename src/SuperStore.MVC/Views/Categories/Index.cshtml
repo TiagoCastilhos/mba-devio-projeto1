@@ -5,6 +5,18 @@
 @model IEnumerable<SuperStore.MVC.ViewModels.Categories.CategoryViewModel>;
 
 <h3>Categorias</h3>
+@if (TempData.ContainsKey("SuccessMessage"))
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData.ContainsKey("ErrorMessage"))
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <div class="card" style="width: 24rem;">
     <ul class="list-group list-group-flush">
         <li class="list-group-item">

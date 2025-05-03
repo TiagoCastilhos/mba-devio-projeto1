@@ -4,8 +4,8 @@ namespace SuperStore.Core.Exceptions;
 
 public sealed class EntityHasRelatedEntitiesException : ServiceApplicationException
 {
-    public EntityHasRelatedEntitiesException(string entityName, Guid entityId)
-        : base($"Entidade {entityName} com id {entityId} possui entidades relacionadas e não pode ser deletada", HttpStatusCode.BadRequest)
+    public EntityHasRelatedEntitiesException(string entityName, string identifier)
+        : base($"{entityName} '{identifier}' possui entidades relacionadas e não pode ser deletada", HttpStatusCode.BadRequest)
     {
     }
 }

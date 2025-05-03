@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SuperStore.Core.Abstractions.Services;
+using SuperStore.Core.Exceptions;
 using SuperStore.Core.InputModels;
 using SuperStore.MVC.ViewModels.Products;
 
@@ -40,7 +41,6 @@ public class ProductsController : Controller
         return View("Index", products.Select(p => new ProductViewModel(p)));
     }
 
-    [Authorize]
     [HttpGet("Index")]
     public async Task<IActionResult> IndexAsync()
     {
@@ -49,7 +49,6 @@ public class ProductsController : Controller
         return View(products.Select(p => new ProductViewModel(p)));
     }
 
-    [Authorize]
     [HttpGet("Create")]
     public async Task<IActionResult> CreateAsync()
     {
@@ -57,7 +56,6 @@ public class ProductsController : Controller
         return View();
     }
 
-    [Authorize]
     [HttpPost("Create")]
     [RequestSizeLimit(4 * 1024 * 1024)]
     public async Task<IActionResult> CreateAsync(ProductViewModel viewModel, IFormFile? image)
@@ -81,11 +79,19 @@ public class ProductsController : Controller
             inputModel.ImageUrl = imagePath;
         }
 
-        await _productsService.CreateAsync(inputModel, Request.HttpContext.RequestAborted);
+        try
+        {
+            await _productsService.CreateAsync(inputModel, Request.HttpContext.RequestAborted);
+            TempData["SuccessMessage"] = $"Produto '{viewModel.Name}' criado com sucesso!";
+        }
+        catch (ServiceApplicationException ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+        }
+
         return RedirectToAction("Index", "Products");
     }
 
-    [Authorize]
     [HttpGet("Edit")]
     public async Task<IActionResult> EditAsync(Guid id)
     {
@@ -99,7 +105,6 @@ public class ProductsController : Controller
         return View(new ProductViewModel(product));
     }
 
-    [Authorize]
     [HttpPost("Edit")]
     [RequestSizeLimit(4 * 1024 * 1024)]
     public async Task<IActionResult> EditAsync(ProductViewModel viewModel, IFormFile? image)
@@ -124,14 +129,32 @@ public class ProductsController : Controller
             inputModel.ImageUrl = imagePath;
         }
 
-        await _productsService.UpdateAsync(inputModel, Request.HttpContext.RequestAborted);
+        try
+        {
+            await _productsService.UpdateAsync(inputModel, Request.HttpContext.RequestAborted);
+            TempData["SuccessMessage"] = $"Produto '{viewModel.Name}' editado com sucesso!";
+        }
+        catch (ServiceApplicationException ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+        }
+
         return RedirectToAction("Index", "Products");
     }
 
     [HttpGet("Delete")]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        await _productsService.DeleteAsync(id, CancellationToken.None);
+        try
+        {
+            await _productsService.DeleteAsync(id, CancellationToken.None);
+            TempData["SuccessMessage"] = $"Produto deletado com sucesso!";
+        }
+        catch (ServiceApplicationException ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+        }
+
         return RedirectToAction("Index", "Products");
     }
 
