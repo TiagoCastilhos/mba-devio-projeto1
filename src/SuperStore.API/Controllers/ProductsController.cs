@@ -30,7 +30,7 @@ public class ProductsController : ControllerBase
 
     [HttpGet("")]
     [ProducesResponseType(typeof(IEnumerable<ProductOutputModel>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllAsync([FromQuery] string category)
+    public async Task<IActionResult> GetAllAsync([FromQuery] string? category)
     {
         var products = await _productsService.GetAsync(category, Request.HttpContext.RequestAborted);
 
