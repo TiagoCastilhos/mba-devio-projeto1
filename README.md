@@ -3,31 +3,51 @@
 Bem-vindo ao repositório do projeto [SuperStore]. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao módulo Introdução ao Desenvolvimento ASP.NET Core. O objetivo principal desenvolver uma aplicação de ecommerce que permite aos usuários criar, editar, visualizar e excluir produtos e categorias, tanto através de uma interface web utilizando MVC quanto através de uma API RESTful. O projeto é uma versão simplificada de um ecommerce, com um CRUD simples e validação de autenticação e autorização.
 
 Autor(es)
+
 Tiago Henrique de Castilhos
 
 2. Proposta do Projeto
+
 O projeto consiste em:
 
 Aplicação MVC: Interface web para interação com o ecommerce.
+
 API RESTful: Exposição dos recursos do ecommerce para integração com outras aplicações ou desenvolvimento de front-ends alternativos.
+
 Autenticação e Autorização: Implementação de controle de acesso, diferenciando administradores e usuários comuns.
+
 Acesso a Dados: Implementação de acesso ao banco de dados através de ORM.
 
 3. Tecnologias Utilizadas
+
 Linguagem de Programação: C#
+
 Frameworks:
+
 ASP.NET Core MVC
+
 ASP.NET Core Web API
+
 Entity Framework Core
+
 Banco de Dados: SQLite e SQL Server
+
 Autenticação e Autorização:
+
 ASP.NET Core Identity
+
 JWT (JSON Web Token) para autenticação na API
+
 Front-end:
+
 Razor Pages/Views
+
 HTML/CSS para estilização básica
+
 Documentação da API: Swagger
+
 4. Estrutura do Projeto
+
 A estrutura do projeto é organizada da seguinte forma:
 
 src/
@@ -42,21 +62,34 @@ SuperStore.Core/ - Serviços responsáveis pela validação e orquestração da
 parte lógica da aplicação
 
 README.md - Arquivo de Documentação do Projeto
+
 FEEDBACK.md - Arquivo para Consolidação dos Feedbacks
-.gitignore - Arquivo de Ignoração do Git
+
+.gitignore - Arquivo de para ignorar arquivos e pastas do Git
 
 5. Funcionalidades Implementadas
+
 CRUD para Produtos e Categorias: Permite criar, editar, visualizar e excluir produtos e categorias.
+
 Autenticação e Autorização: Diferenciação entre usuários comuns e administradores.
+
 API RESTful: Exposição de endpoints para operações CRUD via API.
 Documentação da API: Documentação automática dos endpoints da API utilizando Swagger.
+
 6. Como Executar o Projeto
+
 Pré-requisitos
+
 .NET SDK 8.0 ou superior
+
 SQL Server (Opcional)
+
 Visual Studio 2022 ou superior (ou qualquer IDE de sua preferência)
+
 Git
+
 Passos para Execução
+
 Clone o Repositório:
 
 git clone https://github.com/seu-usuario/nome-do-repositorio.git
@@ -68,7 +101,8 @@ Caso deseje utilizar o SQLite como banco de dados, não se faz necessário confi
 Configuração do Banco de Dados:
 
 No arquivo appsettings.json, configure a string de conexão do SQL Server.
-Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos
+Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos.
+
 Executar a Aplicação MVC:
 
 cd src/SuperStore.Mvc/
@@ -96,6 +130,9 @@ A documentação da API está disponível através do Swagger. Após iniciar a A
 http://localhost:5047/swagger
 
 9. Avaliação
+
 Este projeto é parte de um curso acadêmico e não aceita contribuições externas.
+
 Para feedbacks ou dúvidas utilize o recurso de Issues
+
 O arquivo FEEDBACK.md é um resumo das avaliações do instrutor e deverá ser modificado apenas por ele.
