@@ -19,7 +19,7 @@ namespace SuperStore.Core.Seeds
 
             await context.Database.MigrateAsync();
 
-            if (context.Categories.Any())
+            if (context.Sellers.Any())
                 return;
 
             await usersService.CreateAsync(new CreateUserInputModel("test@test.com", "test01", "Senha123@"), CancellationToken.None);

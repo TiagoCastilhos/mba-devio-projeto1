@@ -31,10 +31,16 @@ Documentação da API: Swagger
 A estrutura do projeto é organizada da seguinte forma:
 
 src/
+
 SuperStore.MVC/ - Projeto MVC
+
 SuperStore.Api/ - API RESTful
+
 SuperStore.Data/ - Modelos de Dados e Configuração do EF Core
-SuperStore.Core/ - Serviços responsáveis pela validação e orquestração da parte lógica da aplicação
+
+SuperStore.Core/ - Serviços responsáveis pela validação e orquestração da 
+parte lógica da aplicação
+
 README.md - Arquivo de Documentação do Projeto
 FEEDBACK.md - Arquivo para Consolidação dos Feedbacks
 .gitignore - Arquivo de Ignoração do Git
@@ -73,6 +79,12 @@ Executar a API:
 cd src/SuperStore.Api/
 dotnet run
 Acesse a documentação da API em: http://localhost:5047/swagger
+
+A aplicação possui algumas categorias, produtos e um usuário pré configurados. As credenciais para esse usuário são:
+
+E-mail: test@test.com
+
+Senha: Senha123@
 
 7. Instruções de Configuração
 JWT para API: As chaves de configuração do JWT estão no appsettings.json.
